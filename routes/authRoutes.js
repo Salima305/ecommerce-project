@@ -1,0 +1,54 @@
+const express=require("express")
+const router=express.Router()
+const authController=require("../controllers/authControllers")
+const { body } = require("express-validator")
+const isAuth=require("../middleware/authMiddleware")
+
+
+router.get("/signup",authController.getSignup)
+router.post("/signup",[body("name").notEmpty().withMessage("Name is required"),body("email").isEmail().withMessage("Enter a valid email"),body("password")
+    .isLength({ min: 6 }).withMessage("Password must be at least 6 characters")
+    .matches(/[A-Z]/).withMessage("Password must contain one uppercase letter")
+    .matches(/[0-9]/).withMessage("Password must contain one number")],authController.postSignup)
+router.get("/login",authController.getLogin)
+router.post("/login",authController.postLogin)
+router.get("/home",isAuth,authController.getHome)
+router.get("/collection",authController.getCollectionPage)
+router.get("/getProductsData",authController.getAllProducts)
+router.get("/productDetails",authController.getDetailPage)
+router.get("/getproductDetails",authController.getProductDetails)
+router.get("/cart",authController.getCart)
+router.post("/addToCart",isAuth,authController.addToCart)
+router.get("/cartData",isAuth,authController.getcartData)
+router.post("/removeFromCart", isAuth, authController.removeFromCart)
+router.patch("/cart/updateQty", isAuth, authController.updateQty)
+router.post("/applyCoupon", isAuth, authController.applyCoupon)
+
+router.get("/userProfile",authController.getUserProfile)
+router.get("/profileData",isAuth,authController.getprofileData)
+router.patch("/updateProfile",isAuth,authController.updateProfile)
+router.post("/addAddress",authController.addAddress)
+router.get("/getAddress",authController.getAddress)
+router.delete("/address/:id",authController.deleteAddress)
+router.patch("/address/:id",authController.updateAddress)
+router.patch("/changepassword",authController.changePassword)
+router.get("/checkout",authController.getCheckout)
+router.get("/getCheckoutData",authController.getCheckoutData)
+router.get("/logout",authController.logout)
+router.post("/placeOrder",authController.postplaceOrder)
+router.post("/checkout/verify-payment", authController.postVerifyPayment)
+router.get("/order-confirmation/:id", authController.getOrderConfirmation)
+router.get("/api/order/:id",authController.getSingleOrder)
+router.get("/myOrders", isAuth, authController.getMyOrders)
+router.get("/orders/:id", isAuth, authController.getOrderDetailPage)
+router.patch("/order/:id/cancel", isAuth, authController.cancelOrder)
+router.patch("/order/:id/return", isAuth, authController.returnOrder)
+
+
+
+
+
+
+
+
+module.exports=router

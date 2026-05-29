@@ -1,0 +1,88 @@
+<%- include('partials/header', { title: 'Category Management' }) %>
+
+<div class="container-fluid">
+  <div class="row">
+
+    
+    <div class="col-md-2 sidebar">
+      <%- include('partials/sidebar', { activePage: 'categories' }) %>
+    </div>
+
+    
+    <div class="col-md-10">
+
+    
+      <div class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom bg-white">
+        <h4 class="mb-0">Category Management</h4>
+      </div>
+
+
+      <div class="p-4">
+         <div class="d-flex mb-3">
+          <input type="text" id="categoryName" class="form-control me-2" placeholder="Enter category name">
+          <button class="btn btn-primary" id="addCategoryBtn">Add</button>
+        </div>
+
+    
+        <div class="card shadow-sm">
+          <div class="card-body">
+
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% if (categories.length > 0) { %>
+                  <% categories.forEach(cat => { %>
+                    <tr>
+                      <td><%= cat.name %></td>
+
+                      <td>
+                        <span class="badge <%= cat.isBlocked ? 'bg-danger' : 'bg-success' %>">
+                          <%= cat.isBlocked ? 'Blocked' : 'Active' %>
+                        </span>
+                      </td>
+
+                      <td>
+                       <button 
+           class="btn btn-warning btn-sm editCategoryBtn"
+           data-id="<%= cat._id %>"
+           data-name="<%= cat.name %>">
+           Edit
+          </button>
+
+            <button 
+                class="btn btn-sm toggleCategoryBtn 
+                <%= cat.isBlocked ? 'btn-success' : 'btn-danger' %>"
+                 data-id="<%= cat._id %>"
+                 data-active="<%= cat.isBlocked%>">
+                 <%= cat.isBlocked ? 'Unblock' : 'Block' %>
+             </button>
+                      </td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="3" class="text-center">No categories found</td>
+                  </tr>
+                <% } %>
+              </tbody>
+
+            </table>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+<script src="/category.js"></script>

@@ -1,0 +1,338 @@
+<%- include('partials/userHeader', { title: 'Order Details' }) %>
+
+<style>
+    :root {
+        --cream: #f5f0e8;
+        --cream-dark: #ede8de;
+        --border: #ddd5c8;
+        --text: #2a1a1a;
+        --muted: #7a6a5a;
+        --burgundy: #5c1a1a;
+        --green: #4a7a4a;
+        --font-serif: 'Playfair Display', serif;
+        --font-sans: 'Lato', sans-serif;
+    }
+
+    body { background: var(--cream); }
+
+    .order-detail-wrap {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 48px 24px 80px;
+    }
+
+    .back-link {
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 32px;
+    }
+
+    .back-link:hover { color: var(--text); }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .order-title {
+        font-family: var(--font-serif);
+        font-size: 2rem;
+        font-weight: 400;
+        color: var(--text);
+    }
+
+    .order-date {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-top: 6px;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        font-size: 0.68rem;
+        letter-spacing: 2px;
+        font-weight: 600;
+    }
+
+    .status-pending  { background: #fef9c3; color: #854d0e; }
+    .status-paid     { background: #dbeafe; color: #1e40af; }
+    .status-confirmed { background: #dbeafe; color: #1e40af; }
+    .status-shipped  { background: #ede9fe; color: #5b21b6; }
+    .status-out-for-delivery { background: #fef3c7; color: #92400e; }
+    .status-delivered { background: #dcfce7; color: #166534; }
+    .status-cancelled { background: #fee2e2; color: #991b1b; }
+    .status-return-requested { background: #fce7f3; color: #9d174d; }
+
+    .section-title {
+        font-size: 0.68rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .card {
+        background: var(--cream-dark);
+        border: 1px solid var(--border);
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .item-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .item-row:last-child { border-bottom: none; }
+
+    .item-img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        background: #e8e0d4;
+        flex-shrink: 0;
+    }
+
+    .item-name {
+        font-family: var(--font-serif);
+        font-size: 1rem;
+        color: var(--text);
+    }
+
+    .item-qty {
+        font-size: 0.72rem;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-top: 4px;
+    }
+
+    .item-price {
+        margin-left: auto;
+        font-family: var(--font-serif);
+        font-size: 1rem;
+        color: var(--text);
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-size: 0.85rem;
+    }
+
+    .summary-row .label { color: var(--muted); }
+
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 12px;
+        margin-top: 12px;
+        border-top: 1px solid var(--border);
+        font-family: var(--font-serif);
+        font-size: 1.3rem;
+    }
+
+    .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .action-section {
+        margin-top: 32px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .btn-cancel {
+        padding: 12px 28px;
+        background: transparent;
+        border: 1px solid #991b1b;
+        color: #991b1b;
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .btn-cancel:hover {
+        background: #991b1b;
+        color: white;
+    }
+
+    .btn-return {
+        padding: 12px 28px;
+        background: transparent;
+        border: 1px solid var(--muted);
+        color: var(--muted);
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .btn-return:hover {
+        background: var(--muted);
+        color: white;
+    }
+
+    .status-tracker {
+    display: flex;
+    align-items: center;
+    margin: 32px 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.tracker-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 80px;
+}
+
+.tracker-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--muted);
+    transition: all 0.3s;
+}
+
+.tracker-dot.completed {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+}
+
+.tracker-dot.active {
+    background: var(--burgundy);
+    border-color: var(--burgundy);
+    color: white;
+}
+
+.tracker-dot.cancelled {
+    background: #991b1b;
+    border-color: #991b1b;
+    color: white;
+}
+
+.tracker-label {
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+}
+
+.tracker-label.active { color: var(--burgundy); font-weight: 600; }
+.tracker-label.completed { color: var(--green); }
+.tracker-label.cancelled { color: #991b1b; font-weight: 600; }
+
+.tracker-line {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    min-width: 30px;
+    margin-bottom: 20px;
+}
+
+.tracker-line.completed { background: var(--green); }
+.tracker-line.cancelled { background: #991b1b; }
+
+</style>
+
+<div class="order-detail-wrap">
+
+    <a href="/userProfile" class="back-link">← Back to Profile</a>
+
+    <div class="order-header">
+        <div>
+            <h1 class="order-title" id="order-id">Order #------</h1>
+            <p class="order-date" id="order-date">Placed on --</p>
+        </div>
+        <span class="status-badge" id="order-status">--</span>
+    </div>
+<!-- Status Tracker -->
+<div class="status-tracker" id="status-tracker"></div>
+    <!-- Items -->
+    <p class="section-title">Items Ordered</p>
+    <div class="card" id="order-items"></div>
+
+    <!-- Pricing + Address -->
+    <div class="two-col">
+
+        <div>
+            <p class="section-title">Payment Summary</p>
+            <div class="card">
+                <div class="summary-row">
+                    <span class="label">Subtotal</span>
+                    <span id="subtotal">-</span>
+                </div>
+                <div class="summary-row">
+                    <span class="label">Shipping</span>
+                    <span id="shipping">-</span>
+                </div>
+                <div class="summary-row">
+                    <span class="label">Discount</span>
+                    <span id="discount">-</span>
+                </div>
+                <div class="summary-row">
+                    <span class="label">Payment</span>
+                    <span id="payment-method">-</span>
+                </div>
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span id="total">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <p class="section-title">Delivery Address</p>
+            <div class="card">
+                <p id="address-name" style="font-weight:600; margin-bottom:8px;"></p>
+                <p id="address-lines" style="color:var(--muted); line-height:1.8; font-size:0.88rem;"></p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section" id="action-section"></div>
+
+</div>
+
+<%- include('partials/userFooter') %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/orderDetail.js"></script>

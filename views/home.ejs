@@ -1,0 +1,278 @@
+<%- include('partials/userHeader', { title: 'Home' }) %>
+
+<style>
+  
+  .hero {
+    padding: 60px 40px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+ 
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(4rem, 9vw, 8rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.1;
+    color: #3d0a0a;
+    max-width: 800px;
+}
+
+ 
+  .featured-section {
+    padding: 20px 40px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+   .featured-row-1 img {
+    width: 100%;
+    height: auto;
+    display: block;
+
+}
+  .featured-row-1 {
+    display: grid;
+    margin-bottom: 20px;
+    padding-right: 80px;
+  }
+
+ 
+
+  .featured-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .featured-row-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .featured-item {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .featured-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .featured-item:hover img {
+    transform: scale(1.03);
+  }
+
+  .item-label {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    letter-spacing: 1px;
+  }
+
+  .item-label-dark {
+    color:#2e0303;
+    text-shadow: none;
+  }
+
+ 
+  .caption-card {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: var(--cream);
+    padding: 14px 18px;
+    max-width: 200px;
+    font-size: 0.8rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: #2e0303;
+  }
+
+
+  .item-label-top {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: #c0392b;
+    letter-spacing: 1px;
+  }
+
+
+  .quote-section {
+    padding: 80px 40px;
+    text-align: center;
+    border-top: 1px solid var(--light-border);
+    border-bottom: 1px solid var(--light-border);
+    max-width: 1100px;
+    margin: 0 auto 60px;
+  }
+
+  .quote-label {
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 24px;
+  }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-style: italic;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto 24px;
+    color:#2e0303;
+  }
+
+  .quote-link {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dark);
+    text-decoration: none;
+    border-bottom: 1px solid var(--dark);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+  }
+
+  .quote-link:hover { color: var(--accent); border-color: var(--accent); }
+
+ 
+  .bottom-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1100px;
+    margin: 0 auto 60px;
+    padding: 0 40px;
+    gap: 20px;
+  }
+
+  .gallery-item {
+    overflow: hidden;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.03);
+  }
+
+  
+  .emprtz-footer {
+    border-top: 1px solid var(--light-border);
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: #999;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    color: #999;
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--dark); }
+
+  .footer-icons {
+    display: flex;
+    gap: 16px;
+  }
+
+  .footer-icons a {
+    color: #999;
+    font-size: 1rem;
+    transition: color 0.2s;
+  }
+
+  .footer-icons a:hover { color: var(--dark); }
+</style>
+
+
+<section class="hero">
+  <h1 class="hero-title">The Heirloom<br>Essence.</h1>
+</section>
+
+
+<section class="featured-section">
+
+ 
+  <div class="featured-row-1" id="featuredrow1">
+     <div class="caption-card">Rose gold dreams, crystal gleam. Some things are simply meant to be worn close to the heart.</div>
+    </div>
+  </div>
+
+ 
+  <div class="featured-row-2" id="featuredrow2">
+    </div>
+
+ 
+  <div class="featured-row-3" id="featuredrow3">
+   </div>
+
+</section>
+
+
+<section class="quote-section">
+  <p class="quote-label">The Curator's Note</p>
+  <p class="quote-text">"We do not sell jewelry; we re-home artifacts. Each piece in the Emprtz collection carries the patina of time and the touch of local masters."</p>
+  <!-- <a href="/our-story" class="quote-link">Discover Our Story →</a> -->
+</section>
+
+
+<div class="bottom-gallery" id="bottomgallery">
+   </div>
+  <div class="gallery-item" id="galleryitem">
+</div>
+
+
+<footer class="emprtz-footer">
+  <span>© 2026 Emprtz. All rights reserved.</span>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Cart</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="footer-icons">
+    <a href="#"><i class="bi bi-instagram"></i></a>
+    <a href="#"><i class="bi bi-envelope"></i></a>
+  </div>
+</footer>
+<script src="/home.js"></script>
+<script src="/main.js"></script>

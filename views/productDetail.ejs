@@ -1,0 +1,430 @@
+<%- include('partials/userHeader', { title: 'productDetail' }) %>
+
+<style>
+
+.emprtz-main {
+  width: 100%;
+  background: #f8f5f0;
+  color: #1e1e1e;
+  font-family: "Cormorant Garamond", serif;
+}
+
+
+.product-section {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 80px;
+  padding: 120px 8%;
+  align-items: flex-start;
+}
+
+
+.product-gallery {
+  width: 50%;
+}
+
+
+
+.carousel-buttons{
+   position:relative;
+   z-index:10;
+}
+
+
+.product-image {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #ece7df;
+  position:relative;
+}
+
+.product-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  transition:transform 0.4s ease;
+  /* cursor: zoom-in; */
+  cursor: crosshair;
+}
+
+.product-image img:hover {
+  transform: scale(1.5);
+}
+
+
+.product-content {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.product-title {
+  font-size: 54px;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #111;
+}
+
+
+.product-meta,
+.product-description {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meta-label {
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #8a8178;
+}
+
+.meta-value {
+  font-size: 32px;
+  color: #1d1d1d;
+  font-weight: 500;
+}
+
+.description-text {
+  font-size: 18px;
+  line-height: 1.9;
+  color: #4e4e4e;
+}
+
+
+.add-to-cart-btn {
+  width: fit-content;
+  padding: 18px 42px;
+  border: none;
+  background: #111;
+  color: white;
+  font-size: 14px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  text-transform: uppercase;
+}
+
+.add-to-cart-btn:hover {
+  background: #b48a5a;
+  transform: translateY(-2px);
+}
+
+
+.guarantee-text {
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #5d5d5d;
+}
+
+
+.provenance-section {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 80px;
+  padding: 80px 8% 120px;
+  border-top: 1px solid #ddd3c7;
+}
+
+
+
+.provenance-content {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.provenance-label {
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: #8a8178;
+}
+
+.provenance-quote {
+  font-size: 34px;
+  line-height: 1.6;
+  font-style: italic;
+  color: #222;
+  max-width: 700px;
+}
+
+
+.seal-section {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.seal-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ece7df;
+}
+
+.seal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.seal-label {
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: #8a8178;
+  text-transform: uppercase;
+}
+
+
+
+.emprtz-footer {
+  width: 100%;
+  padding: 40px 8%;
+  border-top: 1px solid #ddd3c7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  background: #f8f5f0;
+}
+
+.footer-links,
+.footer-icons {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-links a,
+.footer-icons a {
+  text-decoration: none;
+  color: #444;
+  transition: 0.3s ease;
+}
+
+.footer-links a:hover,
+.footer-icons a:hover {
+  color: #b48a5a;
+}
+
+
+@media (max-width: 992px) {
+
+  .product-section,
+  .provenance-section {
+    flex-direction: column;
+  }
+
+  .product-gallery,
+  .product-content,
+  .provenance-content,
+  .seal-section {
+    width: 100%;
+  }
+
+  .product-image img {
+    height: auto;
+  }
+
+  .product-title {
+    font-size: 42px;
+  }
+
+  .provenance-quote {
+    font-size: 28px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .product-section {
+    padding: 80px 6%;
+    gap: 50px;
+  }
+
+  .provenance-section {
+    padding: 60px 6%;
+  }
+
+  .product-title {
+    font-size: 34px;
+  }
+
+  .meta-value {
+    font-size: 26px;
+  }
+
+  .description-text {
+    font-size: 16px;
+  }
+
+  .provenance-quote {
+    font-size: 22px;
+  }
+
+  .add-to-cart-btn {
+    width: 100%;
+  }
+
+  .emprtz-footer {
+    gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+}
+
+.thumbnail-container{
+   display:flex;
+   gap:12px;
+   margin-top:20px;
+}
+
+.thumbnail-container{
+   display:flex;
+   gap:12px;
+   margin-top:20px;
+}
+
+.thumbnail{
+   width:80px;
+   height:80px;
+   object-fit:cover;
+   cursor:pointer;
+   border:2px solid transparent;
+   transition:0.3s;
+   box-sizing:border-box;
+}
+
+.thumbnail:hover{
+   transform:scale(1.05);
+}
+
+.thumbnail.active{
+   border:3px solid #d25b16;
+}
+
+.thumbnail:hover{
+   border:1px solid #111;
+   transform:scale(1.05);
+}
+
+</style>
+<main class="emprtz-main">
+
+  
+  <section class="product-section">
+    <div id="productDetailContainer">
+      
+    </div>
+
+   
+    <div class="product-gallery">
+      <div class="carousel-buttons">
+
+  
+</div>
+
+
+      <div class="product-image">
+        <img id="productImage" src="" alt="Product Image">
+      </div>
+<div class="thumbnail-container" id="thumbnailContainer"></div>
+    </div>
+
+   
+    <div class="product-content">
+
+      
+      <h1 class="product-title" id="productTitle">
+        
+      </h1>
+
+      
+      <div class="product-meta">
+
+        <span class="meta-label">
+         
+        </span>
+
+        <span class="meta-value" id="productPrice">
+          
+        </span>
+
+      </div>
+
+      
+      <div class="product-description">
+
+        <span class="meta-label">
+          
+        </span>
+
+        <p class="description-text" id="productDescription">
+          
+        </p>
+
+      </div>
+
+      
+      <button class="add-to-cart-btn" id="addToCartBtn" onclick="addToCart()">
+        ADD TO CART →
+      </button>
+
+      
+
+    </div>
+
+  </section>
+
+  
+  <section class="provenance-section">
+
+   
+    <div class="provenance-content">
+
+      <span class="provenance-label">
+        PROVENANCE
+      </span>
+
+      <blockquote class="provenance-quote" id="productProvenance">
+        "Each piece is sourced from local estates in the Emprtz valley,
+         restored by hand to preserve the original patina of the metal."
+      </blockquote>
+
+    </div>
+
+   
+    <div class="seal-section">
+
+      <div class="seal-image">
+
+        <img id="sealImage" src="/sampleseal.jpeg" alt="Seal of Origin">
+
+      </div>
+
+      <span class="seal-label">
+        SEAL OF ORIGIN
+      </span>
+
+    </div>
+
+  </section>
+
+</main>
+
+<%- include('partials/userFooter') %>
+
+<script src="/productDetails.js"></script>

@@ -1,0 +1,291 @@
+<%- include('partials/userHeader', { title: 'Collection' }) %>
+
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --dark: #1a1a1a;
+    --dark-brown: #3d0a0a;
+    --accent: #8b6f4e;
+    --light-border: #e0d8cc;
+    --sidebar-width: 180px;
+  }
+
+  .collection-wrapper {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    min-height: 100vh;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 40px 60px;
+    gap: 40px;
+  }
+
+ 
+  .sidebar {
+    padding-top: 10px;
+  }
+
+  .sidebar-label {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 20px;
+  }
+
+  .category-group {
+    margin-bottom: 24px;
+  }
+
+  .category-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--dark-brown);
+    cursor: pointer;
+    margin-bottom: 6px;
+    display: block;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .category-name:hover { opacity: 0.7; }
+
+  .subcategories {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .subcategory {
+    font-size: 0.8rem;
+    color: #888;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .subcategory:hover { color: var(--dark); }
+
+ 
+  .sidebar-quote {
+    border: 1px solid var(--light-border);
+    padding: 16px;
+    margin-top: 32px;
+    font-size: 0.78rem;
+    font-style: italic;
+    line-height: 1.6;
+    color: #666;
+  }
+
+ 
+  .collection-main {
+    padding-top: 10px;
+  }
+
+  .collection-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--dark-brown);
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+
+  .collection-desc {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 40px;
+    max-width: 400px;
+    line-height: 1.6;
+  }
+
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 24px;
+  }
+
+
+  .product-card:nth-child(even) {
+    margin-top: 60px;
+  }
+
+  .product-card {
+    cursor: pointer;
+  }
+
+  .product-image-wrap {
+    overflow: hidden;
+    margin-bottom: 14px;
+    background: #e8e0d4;
+  }
+
+  .product-image-wrap img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .add-cart-btn{
+
+width:100%;
+
+height:48px;
+
+border:none;
+
+background:#651919;
+
+color:#f5f0e8;
+
+font-size:0.82rem;
+
+letter-spacing:.12em;
+
+cursor:pointer;
+
+transition:.2s;
+}
+
+.add-cart-btn,
+.out-stock-btn{
+
+width:160px;
+
+height:42px;
+
+border:none;
+
+margin-top:10px;
+
+font-size:0.72rem;
+
+letter-spacing:.14em;
+
+font-weight:500;
+
+transition:.2s;
+}
+
+.add-cart-btn{
+
+background:#651919;
+
+color:#f5f0e8;
+
+cursor:pointer;
+}
+
+.add-cart-btn:hover{
+
+background:#4e1111;
+}
+
+.out-stock-btn{
+
+background:#ddd3c7;
+
+color:#8b7868;
+
+cursor:not-allowed;
+
+border:1px solid #cfc3b7;
+}
+
+.product-info{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:8px;
+}
+
+  .product-card:hover .product-image-wrap img {
+    transform: scale(1.04);
+  }
+
+  .product-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--dark);
+    font-weight: 400;
+  }
+
+  .product-price {
+    font-size: 0.85rem;
+    color: #2d2929;
+    letter-spacing: 0.5px;
+  }
+
+
+  .collection-footer {
+    border-top: 1px solid var(--light-border);
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: #aaa;
+    text-transform: uppercase;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .collection-footer a {
+    color: #aaa;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+  }
+
+  .collection-footer a:hover { color: var(--dark); }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+</style>
+
+<div class="collection-wrapper">
+
+  
+  <aside class="sidebar">
+    <p class="sidebar-label">Categories</p>
+    <div id="categoryList">
+ </div>
+    <div class="sidebar-quote">
+      "Every piece is a whisper of history, curated from the quiet corners of the world."
+    </div>
+  </aside>
+
+  
+  <main class="collection-main">
+    <h1 class="collection-title">Timeless Designs...</h1>
+    <p class="collection-desc">An arrangement of handcrafted treasures, as seen through the collector's lens.</p>
+
+  
+    <div class="product-grid" id="productList">
+
+    </div>
+  </main>
+</div>
+
+<%- include('partials/userFooter') %>
+<script src="/collection.js"></script>

@@ -1,0 +1,68 @@
+<%- include('partials/header', { title: 'Add Product' }) %>
+
+<div class="container-fluid">
+  <div class="row">
+
+   
+    <div class="col-md-2 sidebar">
+      <%- include('partials/sidebar') %>
+    </div>
+
+   
+    <div class="col-md-10 p-4">
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  
+  <div class="card shadow-lg border-0" style="width: 500px; border-radius: 12px;">
+    
+    <div class="card-body p-4">
+      
+      <h4 class="mb-4 text-center fw-bold">Add Product</h4>
+
+      <form id="addProductForm">
+        <div class="mb-3">
+          <label class="form-label">Product Name</label>
+          <input type="text" id="name" class="form-control" placeholder="Product Name" required>
+        </div>
+           <div class="mb-3">
+        <label>Images</label>
+        <input type="file" id="image" class="form-control" multiple>
+       </div>
+        <div class="mb-4">
+          <label class="form-label">Price</label>
+          <input type="number" id="price" class="form-control" placeholder="Price" required>
+        </div>
+ 
+        <div class="mb-4">
+          <label class="form-label">Category</label>
+           <select name="category" class="form-control">
+  <% categories.forEach(cat => { %>
+    <option value="<%= cat._id %>">
+      <%= cat.name %>
+    </option>
+  <% }) %>
+</select>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Description</label>
+          <input type="text" id="description" class="form-control" placeholder="Description" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">
+          + Add Product
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+    
+
+
+
+<%- include('partials/footer') %>
+
+<script src="/addProduct.js"></script>

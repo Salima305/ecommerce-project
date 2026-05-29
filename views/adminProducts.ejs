@@ -1,0 +1,252 @@
+<%- include('partials/header') %>
+
+<div class="container-fluid">
+  <div class="row">
+
+  
+    <div class="col-md-2 sidebar">
+      <%- include('partials/sidebar') %>
+    </div>
+    <div class="col-md-10 p-4">
+  <div class="d-flex justify-content-between mb-3">
+  <h3>Product Management</h3>
+  <div class="d-flex align-items-center gap-2">
+  <button 
+   class="btn btn-primary"
+   style="width: 150px; height: 38px; white-space: nowrap;"
+   data-bs-toggle="modal" 
+   data-bs-target="#addProductModal">
+  + Add Product
+</button>
+<form method="GET" action="/admin/products" class="d-flex align-items-center gap-2 m-0">
+  <input 
+    type="text" 
+    name="search" 
+    class="form-control me-2" 
+    placeholder="Search products..."
+    style="height: 38px;"
+  >
+  <button class="btn btn-primary">Search</button>
+</form>
+</div>
+</div>
+<div class="card shadow-sm">
+          <div class="card-body">
+<table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Actions</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% if (products && products.length > 0) { %>
+            <% products.forEach((p, i) => { %>
+             <tr id="product-<%= p._id %>">
+              
+                <td><%= i + 1 %></td>
+                <td><%= p.name %></td>
+               <td>
+  <% if (p.image && p.image.length > 0) { %>
+    <img src="/uploads/<%= p.image[0] %>" width="50" style="border-radius:4px;">
+    <% if (p.image.length > 1) { %>
+      <br><small class="text-muted">+<%= p.image.length - 1 %> more</small>
+    <% } %>
+  <% } else { %>
+    No Image
+  <% } %>
+</td>
+                <td><%= p.price %></td>
+                <td><%=p.stock %></td>
+                <td><%=p.category? p.category.name:"no category" %></td>
+                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+               title="<%= p.description %>" >
+                  <%= p.description %></td>
+
+                <td>
+                  <div class="d-flex flex-column gap-2">
+                <button 
+                  class="btn btn-sm btn-warning editBtn"
+                  style="width: 80px;"
+                  data-id="<%= p._id %>"
+                  data-name="<%= p.name %>"
+                  data-price="<%= p.price %>"
+                  data-stock="<%= p.stock %>"
+                  data-category="<%=p.category ? p.category._id:'' %>"
+                  data-description="<%= p.description %>"
+                  data-images='<%- JSON.stringify(p.image || []) %>'
+                > Edit</button>
+                  <button 
+                  type="button"
+                  style="width: 80px;"
+                class="btn btn-sm toggle-btn <%= p.isBlocked ? 'btn-success' : 'btn-danger' %>"
+               onclick="toggleProduct('<%= p._id %>')"
+                >
+              <%= p.isBlocked ? 'Unblock' : 'Block' %>
+              </button>
+              </div>
+               </td>
+                <td>
+                    <% if(p.isBlocked) { %>
+                          <span class="badge bg-danger">Blocked</span>
+                        <% } else { %>
+                          <span class="badge bg-success">Active</span>
+                        <% } %>
+                      </td>
+
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="3">No products found</td>
+            </tr>
+          <% } %>
+        </tbody>
+
+      </table>
+      <div class="modal fade" id="addProductModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-4">
+
+      <!-- Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Add Product</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <form id="addProductForm">
+
+          <div class="mb-3">
+            <label class="form-label">Product Name</label>
+            <input type="text" id="name" class="form-control" required>
+          </div>
+        <input type="file" id="image" class="form-control" multiple accept="image/*">
+          <div class="mb-3">
+            <label class="form-label">Price</label>
+            <input type="number" id="price" class="form-control" required>
+          </div>
+            <div class="mb-3">
+        <label class="form-label">Stock</label>
+         <input type="number" id="stock" class="form-control" required>
+        </div>
+          <div class="mb-3">
+            <label class="form-label">Category</label>
+            <!-- <input type="text" id="category" class="form-control" required> -->
+         <select id="category" name="category" class="form-control" required>
+  <option value="">Select Category</option>
+
+  <% categories.forEach(cat => { %>
+    <option value="<%= cat._id %>">
+      <%= cat.name %>
+    </option>
+  <% }) %>
+
+</select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea id="description" class="form-control" required></textarea>
+          </div>
+
+        </form>
+      </div>
+
+    
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <!-- <button class="btn btn-success" id="addProductBtn">Add Product</button> -->
+     <button type="button" class="btn btn-success" id="addProductBtn">
+  Add Product
+</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="editForm">
+
+          <input type="hidden" id="editId">
+
+          <div class="mb-2">
+            <label>Name</label>
+            <input class="form-control" id="editName">
+          </div>
+
+          <div class="mb-2">
+            <label>Price</label>
+            <input class="form-control" id="editPrice">
+          </div>
+            <div class="mb-2">
+             <label>Stock</label>
+             <input type="number" class="form-control" id="editStock">
+          </div> 
+          <div class="mb-2">
+            <label>Category</label>
+           
+          <select id="editCategory" name="category" class="form-control" required>
+   <option value="">Select Category</option>
+   <% categories.forEach(cat => { %>
+    <option value="<%= cat._id %>">
+      <%= cat.name %>
+    </option>
+  <% }) %>
+
+  </select>
+       </div>
+      <div class="mb-2">
+            <label>Description</label>
+            <input class="form-control" id="editDescription">
+          </div>
+
+       <div class="mb-2">
+         <label>Current Images</label>
+            <div id="currentImages" class="d-flex flex-wrap gap-2">
+        </div>
+  
+            <div class="mb-2">
+      <label>Upload New Images</label>
+         <input type="file" id="editImage" class="form-control" multiple accept="image/*">
+    </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button id="updateBtn" type="button" class="btn btn-primary" >Update</button>
+      </div>
+</form>
+    </div>
+  </div>
+</div>
+
+
+
+<%- include('partials/footer') %>
+
+<script src="/addProduct.js"></script>
+<script src="/editProduct.js"></script>

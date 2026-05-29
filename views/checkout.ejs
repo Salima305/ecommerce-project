@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emprtz</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:       #f5f0e8;
+      --cream-dark:  #ede8de;
+      --border:      #ddd5c8;
+      --border-soft: #cec5b8;
+      --text:        #2a1a1a;
+      --muted:       #7a6a5a;
+      --ref:         #9a8a7a;
+      --burgundy:    #5c1a1a;
+      --burgundy-dk: #4a1515;
+    }
+
+    body {
+      background-color: var(--cream);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Minimal Header ── */
+    .checkout-header {
+      border-bottom: 1px solid var(--border);
+      padding: 22px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .checkout-header .brand {
+       font-family:'Cormorant Garamond', serif ;
+      font-style: italic;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #2e0202;
+      text-decoration: none;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+
+    }
+
+    .checkout-header .back-link {
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .checkout-header .back-link:hover { color: var(--text); }
+    .checkout-header .back-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ── Progress Indicator ── */
+    .checkout-progress {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      padding: 28px 0 0;
+    }
+
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid var(--border-soft);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      letter-spacing: 0;
+      font-weight: 600;
+      color: var(--ref);
+      transition: all 0.3s;
+    }
+
+    .step-dot.active {
+      background: var(--burgundy);
+      border-color: var(--burgundy);
+      color: var(--cream);
+    }
+
+    .step-dot.done {
+      background: var(--text);
+      border-color: var(--text);
+      color: var(--cream);
+    }
+
+    .step-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      font-weight: 500;
+      color: var(--ref);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .step-label.active { color: var(--text); }
+
+    .progress-line {
+      width: 56px;
+      height: 1px;
+      background: var(--border-soft);
+      margin: 0 10px;
+    }
+
+    /* ── Page Layout ── */
+    .checkout-page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .checkout-page h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .checkout-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 48px;
+      display: block;
+    }
+
+    /* ── Two-column layout ── */
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* ── Section Blocks ── */
+    .form-section {
+      margin-bottom: 40px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .section-number {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border-soft);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .section-heading h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 28px;
+    }
+
+    /* ── Form Fields ── */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    .form-row.three {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field-group label {
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+      color: var(--muted);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .field-group label .required {
+      color: var(--burgundy);
+      margin-left: 2px;
+    }
+
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+      padding: 12px 14px;
+      background: transparent;
+      border: 1px solid var(--border-soft);
+      outline: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--text);
+      letter-spacing: 0.02em;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .field-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a8a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+      border-color: var(--text);
+    }
+
+    .field-group input::placeholder,
+    .field-group textarea::placeholder {
+      color: #b0a090;
+      font-style: italic;
+    }
+
+    .field-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* ── Radio Cards (Shipping) ── */
+    .shipping-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .shipping-option {
+      position: relative;
+    }
+
+    .shipping-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .shipping-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border: 1px solid var(--border-soft);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .shipping-option input[type="radio"]:checked + .shipping-label {
+      border-color: var(--text);
+      background: var(--cream-dark);
+    }
+
+    .shipping-option input[type="radio"]:focus-visible + .shipping-label {
+      outline: 2px solid var(--burgundy);
+      outline-offset: 2px;
+    }
+
+    .shipping-label-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+input[type="radio"]{
+
+   accent-color:black;
+
+}
+    .radio-dot {
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--border-soft);
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s;
+    }
+
+    .shipping-option input[type="radio"]:checked + .shipping-label .radio-dot {
+      border-color: var(--text);
+    }
+
+    .radio-dot::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .shipping-option input[type="radio"]:checked + .shipping-label .radio-dot::after {
+      opacity: 1;
+    }
+
+    .shipping-info h6 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    .shipping-info span {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .shipping-price {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ── Payment Method Tabs ── */
+    .payment-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+
+    .payment-tab {
+      padding: 12px 22px;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+      color: var(--ref);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+   .payment-tab.active{
+  background: var(--burgundy);
+  color: var(--cream);
+  border-color: var(--burgundy);
+}
+
+    /* ── Card Number Field with icons ── */
+    .card-field-wrap {
+      position: relative;
+    }
+
+    .card-field-wrap input {
+      width: 100%;
+      padding-right: 90px;
+    }
+
+    .card-icons {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .address-card{
+   border:1px solid #ddd;
+   padding:16px;
+   margin-bottom:14px;
+   cursor:pointer;
+   transition:0.2s;
+}
+
+.address-card:hover{
+   border-color:#5c1a1a;
+}
+
+.address-option{
+   display:flex;
+   gap:14px;
+   align-items:flex-start;
+   cursor:pointer;
+   width:100%;
+}
+
+.address-option input{
+   margin-top:6px;
+}
+
+.address-content h3{
+   font-size:18px;
+   margin-bottom:4px;
+}
+
+.address-content p{
+   margin:2px 0;
+   color:#666;
+   line-height:1.5;
+}
+    .card-icon {
+      width: 30px;
+      height: 20px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.48rem;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .card-icon.visa { color: #1434cb; }
+    .card-icon.mc   { color: #eb001b; }
+
+    /* ── Checkbox ── */
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--border-soft);
+      border-radius: 0;
+      accent-color: var(--burgundy);
+      flex-shrink: 0;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--muted);
+      cursor: pointer;
+      line-height: 1.4;
+    }
+
+    /* ── Order Summary (right column) ── */
+    .order-summary {
+      background: var(--cream-dark);
+      padding: 36px 32px;
+      position: sticky;
+      top: 24px;
+    }
+
+    .order-summary h5 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+
+    /* Mini order items */
+    .summary-items {
+      margin-bottom: 24px;
+    }
+
+    .summary-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .summary-item:first-child {
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .summary-item-img {
+      width: 52px;
+      height: 52px;
+      object-fit: cover;
+      background: #e8e0d4;
+      flex-shrink: 0;
+    }
+
+    .summary-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .summary-item-info .name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .summary-item-info .qty {
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: var(--ref);
+      margin-top: 2px;
+    }
+
+    .summary-item-price {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .summary-row .label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .summary-row .value {
+      font-size: 0.82rem;
+      color: var(--text);
+    }
+
+    .summary-row .value.green {
+      color: #4a7a4a;
+    }
+
+    .summary-divider {
+      border: none;
+      border-top: 1px solid var(--border-soft);
+      margin: 16px 0;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 28px;
+    }
+
+    .total-row .total-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .total-row .total-amount {
+      font-size: 1.7rem;
+      font-weight: 400;
+      color: var(--text);
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* ── Place Order Button ── */
+    .place-order-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--burgundy);
+      color: var(--cream);
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: 14px;
+    }
+
+    .place-order-btn:hover { background: var(--burgundy-dk); }
+
+    .secure-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.68rem;
+      color: var(--ref);
+    }
+
+    .secure-badge svg {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ── UPI Panel (hidden by default) ── */
+    .payment-panel { display: none; }
+    .payment-panel.active { display: block; }
+
+    .upi-info {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    .collection-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--ref);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      color: var(--ref);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .order-summary {
+        position: static;
+        order: -1;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .checkout-header {
+        padding: 18px 20px;
+      }
+
+      .form-row,
+      .form-row.three {
+        grid-template-columns: 1fr;
+      }
+
+      .checkout-page h2 {
+        font-size: 1.9rem;
+      }
+
+.payment-tabs{
+  display:flex;
+  gap:12px;
+  width:100%;
+  margin-bottom:28px;
+}
+
+.payment-tab{
+  flex:1;
+  padding:16px;
+  border:1px solid var(--border-soft);
+  background:transparent;
+  cursor:pointer;
+
+  font-size:0.68rem;
+  letter-spacing:0.16em;
+  font-weight:600;
+
+  color:var(--muted);
+
+  transition:all .2s;
+
+  font-family:'Montserrat', sans-serif;
+}
+
+.payment-tab.active{
+  background:var(--burgundy);
+  color:var(--cream);
+  border-color:var(--burgundy);
+}
+
+      .collection-footer {
+        flex-direction: column;
+        gap: 14px;
+        text-align: center;
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="checkout-header">
+    <a href="/home" class="brand">Emprtz</a>
+    <a href="/cart" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      RETURN TO BAG
+    </a>
+
+  </header>
+
+  <!-- ── Progress ── -->
+  <nav class="checkout-progress" aria-label="Checkout steps">
+    <div class="progress-step">
+      <div class="step-dot done" aria-label="Step 1 complete">✓</div>
+      <span class="step-label">BAG</span>
+    </div>
+    <div class="progress-line" aria-hidden="true"></div>
+    <div class="progress-step">
+      <div class="step-dot active" aria-label="Current step">2</div>
+      <span class="step-label active">CHECKOUT</span>
+    </div>
+    <div class="progress-line" aria-hidden="true"></div>
+    <div class="progress-step">
+      <div class="step-dot" aria-label="Step 3 pending">3</div>
+      <span class="step-label">CONFIRMATION</span>
+    </div>
+  </nav>
+
+  <!-- ── Main ── -->
+  <main class="checkout-page">
+    <h2>Secure Checkout</h2>
+    <span class="checkout-subtitle">Carefully handled, discreetly delivered</span>
+
+    <div class="checkout-layout">
+
+      <!-- ── LEFT: Forms ── -->
+      <div class="checkout-forms">
+
+       
+        <!-- SECTION 2: Shipping -->
+        <section class="form-section" aria-labelledby="shipping-heading">
+          <div class="section-heading">
+            <div class="section-number"></div>
+            <h3 id="shipping-heading">Shipping Address</h3>
+          </div>
+          <hr class="section-divider" />
+
+          
+          <div id="addressContainer"></div>
+        </section>
+
+        <!-- SECTION 3: Delivery Method -->
+        <section class="form-section">
+    <div class="section-heading">
+        <div class="section-number"></div>
+        <h3>Delivery</h3>
+    </div>
+    <hr class="section-divider" />
+    <p style="font-size:0.9rem; color:var(--muted);">
+        Standard Delivery — ₹50 flat fee
+    </p>
+</section>
+
+        <!-- SECTION 4: Payment -->
+        <section class="form-section" aria-labelledby="payment-heading">
+          <div class="section-heading">
+            <div class="section-number"></div>
+            <h3 id="payment-heading">Payment</h3>
+          </div>
+          <hr class="section-divider" />
+
+                   <!-- Card Panel -->
+         <div class="payment-tabs">
+
+<button
+type="button"
+class="payment-tab active"
+id="tab-razorpay"
+onclick="switchTab('razorpay')">
+
+<input
+type="radio"
+name="paymentMethod"
+value="razorpay"
+checked
+hidden>
+
+ONLINE PAYMENT
+
+</button>
+
+<button
+type="button"
+class="payment-tab"
+id="tab-cod"
+onclick="switchTab('cod')">
+
+<input
+type="radio"
+name="paymentMethod"
+value="cod"
+hidden>
+
+CASH ON DELIVERY
+
+</button>
+
+</div>
+
+          <!-- Razorpay Panel -->
+
+<div
+class="payment-panel active"
+id="panel-razorpay">
+
+<p class="upi-info">
+
+Pay securely using:
+
+<br><br>
+
+• Credit / Debit Card  
+• UPI  
+• Wallets  
+• Net Banking  
+
+via Razorpay secure checkout.
+
+</p>
+
+</div>
+
+<!-- COD Panel -->
+
+<div
+class="payment-panel"
+id="panel-cod">
+
+<p class="upi-info">
+
+Your order will be confirmed immediately.
+Please keep the exact amount ready at delivery.
+
+</p>
+
+</div>
+
+      <!-- ── RIGHT: Summary ── -->
+      <aside class="order-summary" aria-label="Order summary">
+        <h5>Your Order</h5>
+
+        <!-- Mini item list -->
+       <div class="summary-items" id="summary-items"></div>
+        <div class="summary-row">
+          <span class="label">SUBTOTAL</span>
+          <span class="value" id="subtotal">-</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="label">SHIPPING</span>
+          <span class="value" id="shipping">-</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="label">DISCOUNT</span>
+          <span class="value green" id="discount">0</span>
+        </div>
+
+        <hr class="summary-divider" />
+
+        <div class="total-row">
+          <span class="total-label">Total Amount</span>
+          <span class="total-amount" id="total">-</span>
+        </div>
+
+        <button class="place-order-btn" id="place-order-btn" type="button" >PLACE ORDER</button>
+
+        <div class="secure-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Secured Heirloom Transaction
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+<%- include('partials/userFooter') %>
+<script src="https://checkout.razorpay.com/v1/checkout.js?ver=2"></script>
+ <script src="/checkout.js"></script>   
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

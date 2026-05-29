@@ -1,0 +1,105 @@
+<%- include('partials/header', { title: 'Analytics' }) %>
+<style>
+    canvas {
+   max-height: 320px;
+}
+
+.chart-card {
+   height: 320px;
+}
+canvas {
+   max-height: 220px;
+}
+
+</style>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 sidebar">
+      <%- include('partials/sidebar') %>
+    </div>
+
+    <div class="col-md-10">
+      <div class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom bg-white shadow-sm">
+        <h4 class="mb-0 fw-bold">📈 Analytics & Reports</h4>
+        <!-- <a href="/admin/logout" class="btn btn-outline-danger btn-sm">Logout</a> -->
+      </div>
+
+      <div class="p-4" style="background:#f1f5f9; min-height:100vh;">
+
+        <!-- Summary Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 p-3">
+              <p class="text-muted small mb-1">Today's Orders</p>
+              <h3 class="fw-bold" id="today-orders">-</h3>
+              <p class="text-muted small mb-0">Revenue: <span id="today-revenue">-</span></p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 p-3">
+              <p class="text-muted small mb-1">This Week's Orders</p>
+              <h3 class="fw-bold" id="week-orders">-</h3>
+              <p class="text-muted small mb-0">Revenue: <span id="week-revenue">-</span></p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 p-3">
+              <p class="text-muted small mb-1">This Month's Orders</p>
+              <h3 class="fw-bold" id="month-orders">-</h3>
+              <p class="text-muted small mb-0">Revenue: <span id="month-revenue">-</span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row g-3 mb-4">
+          <!-- Bar Chart -->
+          <div class="col-md-6">
+<div class="card chart-card border-0 shadow-sm rounded-4 p-4">
+              <h6 class="fw-bold mb-3">Sales Overview</h6>
+              <canvas id="salesChart"></canvas>
+            </div>
+          </div>
+          <!-- Pie Chart -->
+          <div class="col-md-6">
+ <div class="card chart-card border-0 shadow-sm rounded-4 p-4">
+              <h6 class="fw-bold mb-3">Revenue Distribution</h6>
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Products -->
+        <div class="row g-3">
+          <div class="col-md-6">
+         <div class="card chart-card border-0 shadow-sm rounded-4 p-4">
+              <h6 class="fw-bold mb-3">Top 5 Products</h6>
+              <canvas id="topProductsChart"></canvas>
+            </div>
+          </div>
+          <div class="col-md-6">
+<div class="card chart-card border-0 shadow-sm rounded-4 p-4">
+              <h6 class="fw-bold mb-3">Top Products Table</h6>
+              <table class="table table-sm">
+                <thead class="table-light">
+                  <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Units Sold</th>
+                  </tr>
+                </thead>
+                <tbody id="top-products-table">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/adminAnalytics.js"></script>

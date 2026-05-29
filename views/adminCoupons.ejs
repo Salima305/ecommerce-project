@@ -1,0 +1,133 @@
+<%- include('partials/header',{coupons}) %>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-2 sidebar">
+      <%- include('partials/sidebar') %>
+    </div>
+
+    
+<div class="col-md-10 p-4">
+
+   <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold">Coupon Management</h3>
+  </div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+      <div class="row g-2">
+
+        <input type="hidden" id="editCouponId">
+
+        <div class="col-md-2">
+          <input type="text" id="code" class="form-control" placeholder="Code">
+        </div>
+
+         <div class="col-md-2">
+          <input type="number" id="discount" class="form-control" placeholder="Discount %">
+        </div>
+
+        <div class="col-md-2">
+          <input type="number" id="minAmount" class="form-control" placeholder="Min Amount">
+        </div>
+
+        <div class="col-md-2">
+          <input type="number" id="maxAmount" class="form-control" placeholder="Max Amount">
+        </div>
+
+        <div class="col-md-2">
+          <input type="date" id="expiry" class="form-control">
+        </div>
+
+        <div class="col-md-2">
+          <button class="btn btn-success w-100" onclick="addCoupon()">
+            + Add
+          </button>
+        </div>
+
+        <div class="col-md-2">
+     <button class="btn btn-primary w-100 d-none" id="updateCouponBtn" onclick="updateCoupon()">
+       Update
+     </button>
+    </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Code</th>
+            <th>Discount</th>
+            <th>Min</th>
+            <th>Max</th>
+            <th>Expiry</th>
+            <th>Status</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% if (coupons && coupons.length > 0) { %>
+            <% coupons.forEach(c => { %>
+              <tr>
+
+                <td class="fw-bold text-primary"><%= c.code %></td>
+
+                <td>
+                  <span class="badge bg-info">
+                    <%= c.discount %>%
+                  </span>
+                </td>
+
+                <td>₹ <%= c.minAmount %></td>
+                <td>₹ <%= c.maxAmount || '-' %></td>
+                <td>
+                  <%= new Date(c.expiryDate).toLocaleDateString("en-IN") %>
+                </td>
+ 
+                <td>
+                  <span class="badge <%= c.isActive ? 'bg-success' : 'bg-danger' %>">
+                    <%= c.isActive ? "Active" : "Expired" %>
+                  </span>
+                </td>
+
+                <td class="text-center">
+                  <button class="btn btn-sm btn-warning me-2"
+                    onclick="editCoupon('<%= c._id%>','<%=c.code%>','<%=c.discount%>','<%=c.minAmount%>','<%=c.maxAmount%>','<%=c.expiryDate%>')">
+                    Edit
+                  </button>
+
+                  <button class="btn btn-sm <%= c.isActive ? 'btn-danger' : 'btn-success' %>"
+                    onclick="toggleCoupon('<%=c._id%>')">
+                    <%= c.isActive ? 'Disable' : 'Enable' %>
+                  </button>
+                </td>
+
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">
+                No coupons available
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>
+<script src="/coupon.js"></script>

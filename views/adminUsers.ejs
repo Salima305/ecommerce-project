@@ -1,0 +1,67 @@
+ <%- include('partials/header', { title: 'Users' }) %>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-2 sidebar">
+      <%- include('partials/sidebar', { activePage: 'users' }) %>
+    </div>
+
+<div class="col-md-10 p-4">
+  <h3>User Management</h3>
+
+  <div class="card shadow-sm">
+          <div class="card-body">
+  <table class="table table-bordered mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% users.forEach((user, index) => { %>
+       
+<tr id="user-<%= user._id %>">
+  <td><%= index + 1 %></td>
+  <td><%= user.email %></td>
+
+  <td>
+  <span class="badge <%=user.isBlocked? 'bg-danger':'bg-success'%>">
+    <%= user.isBlocked ? 'Blocked' : 'Active' %>
+  </span>
+  </td>
+
+  <td>
+    <button type="button"
+      class="btn btn-outline-danger blockBtn"
+      data-id="<%= user._id %>" 
+      data-blocked="<%= user.isBlocked %>">
+      <% if (user.isBlocked){ %>
+        unblock
+      <% } else { %>
+        block
+     <% } %>
+    </button>
+    <!-- <button onclick="deleteUser('<%= user._id %>')" 
+        class="btn btn-danger btn-sm">
+  Delete
+</button> -->
+  </td>
+</tr>
+         
+<% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('partials/footer') %>
+
+<script src="/adminUsers.js">
+
+  
+
+</script>
