@@ -1,11 +1,6 @@
 document.getElementById("addProductBtn").addEventListener("click", async (e) => {
   e.preventDefault();
-
- 
 const formData = new FormData();
-
-
-
 formData.append("name", document.getElementById("name").value);
 formData.append("price", document.getElementById("price").value);
 formData.append("stock", document.getElementById("stock").value);
@@ -16,9 +11,7 @@ if (!category) {
 }
 formData.append("category", category);
 console.log("CATEGORY VALUE:", category);
-//formData.append("category", document.getElementById("category").value);
 formData.append("description", document.getElementById("description").value);
-
 
 const files = document.getElementById("image").files;
 
@@ -48,8 +41,6 @@ if (res.ok){
 }
 });
 
-
-
 async function toggleProduct(productId) {
 
   const result = await Swal.fire({
@@ -75,8 +66,6 @@ async function toggleProduct(productId) {
     const button = row.querySelector(".toggle-btn");
 
     const isBlocked = data.isBlocked;
-
-    //statusCell.innerText = isBlocked ? "Blocked" : "Active";
     button.innerText = isBlocked ? "Unblock" : "Block";
 
     button.classList.toggle("btn-danger");

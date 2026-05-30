@@ -30,7 +30,7 @@ const getDashboardData = async () => {
       {
         $group: {
           _id: null,
-        totalRevenue: { $sum: "$pricing.total" },
+          totalRevenue: { $sum: "$pricing.total" },
         },
       },
     ]);
@@ -284,7 +284,6 @@ const getAnalytics = async () => {
     topProducts,
   };
 };
-
 
 module.exports = {
   adminLogin,

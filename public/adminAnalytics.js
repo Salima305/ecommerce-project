@@ -3,8 +3,6 @@ const loadAnalytics = async () => {
     const result = await response.json()
     const data = result.data
     
-
-   
     document.getElementById('today-orders').textContent = data.today.orders
     document.getElementById('today-revenue').textContent = `₹${data.today.revenue.toLocaleString('en-IN')}`
     document.getElementById('week-orders').textContent = data.week.orders
@@ -12,7 +10,6 @@ const loadAnalytics = async () => {
     document.getElementById('month-orders').textContent = data.month.orders
     document.getElementById('month-revenue').textContent = `₹${data.month.revenue.toLocaleString('en-IN')}`
 
-  
     new Chart(document.getElementById('salesChart'), {
         type: 'line',
         data: {
@@ -37,7 +34,6 @@ const loadAnalytics = async () => {
         }
     })
 
-   
     new Chart(document.getElementById('revenueChart'), {
         type: 'doughnut',
         data: {
@@ -54,7 +50,6 @@ const loadAnalytics = async () => {
         options: { responsive: true }
     })
 
-  
     const productLabels = data.topProducts.map(p => p._id)
     const productSales = data.topProducts.map(p => p.totalSold)
 
@@ -75,7 +70,6 @@ const loadAnalytics = async () => {
         }
     })
 
-   
     const tbody = document.getElementById('top-products-table')
     data.topProducts.forEach((product, index) => {
         tbody.innerHTML += `

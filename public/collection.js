@@ -39,7 +39,7 @@ const getProductData = (search = "", category = "") => {
             stockButton = `
             <button class="out-stock-btn" disabled>OUT OF STOCK</button>
         `;
-        } else {
+          } else {
             stockButton = `<button class="add-cart-btn" onclick="addToCart('${product._id}')">
             ADD TO CART</button>
 `;
@@ -70,7 +70,6 @@ async function addToCart(productId) {
   try {
     const response = await fetch("/addToCart", {
       method: "POST",
-
       headers: {
         "Content-Type": "application/json",
       },
@@ -79,17 +78,13 @@ async function addToCart(productId) {
     });
 
     const result = await response.json();
-
     console.log(result);
 
     if (result.status) {
       Swal.fire({
         icon: "success",
-
         title: "Added to Cart",
-
         timer: 1200,
-
         showConfirmButton: false,
       });
 
@@ -99,9 +94,7 @@ async function addToCart(productId) {
     } else {
       Swal.fire({
         icon: "error",
-
         title: "Oops...",
-
         text: result.message,
       });
     }

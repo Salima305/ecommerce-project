@@ -439,22 +439,16 @@ const postVerifyPayment = async (req, res) => {
 
     const order = await authServices.saveOrder({
       userId,
-
       addressId,
-
       razorpayOrderId,
-
       razorpayPaymentId,
-
       paymentMethod: "razorpay",
-
       discountAmount,
       couponCode,
     });
 
     return res.json({
       success: true,
-
       orderId: order._id,
     });
   } catch (error) {
@@ -475,8 +469,7 @@ const getOrderConfirmation = async (req, res) => {
 const getSingleOrder = async (req, res) => {
   try {
     const orderId = req.params.id;
-
-    const order = await authServices.SingleOrder(orderId);
+     const order = await authServices.SingleOrder(orderId);
 
     if (!order) {
       return res.json({
@@ -499,8 +492,6 @@ const getSingleOrder = async (req, res) => {
   }
 };
 
-
-
 const getMyOrders = async (req, res) => {
   try {
     const userId = req.session.user;
@@ -521,51 +512,52 @@ const getMyOrders = async (req, res) => {
 };
 
 const getOrderDetailPage = async (req, res) => {
-    res.render('orderDetail')
-}
+  res.render("orderDetail");
+};
 
 const cancelOrder = async (req, res) => {
-    try {
-        const orderId=req.params.id
-        const result=await authServices.cancelOrder(orderId)
-        if(result.success){
-         return res.json({ status: true, message: 'Order cancelled successfully' })
-        }else{
-         return res.json({ status: false, message: result.message })
-        }
-    } catch (error) {
-          console.log(error)
-        res.json({ status: false, message: error.message })
-    
+  try {
+    const orderId = req.params.id;
+    const result = await authServices.cancelOrder(orderId);
+    if (result.success) {
+      return res.json({
+        status: true,
+        message: "Order cancelled successfully",
+      });
+    } else {
+      return res.json({ status: false, message: result.message });
     }
-}
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: error.message });
+  }
+};
 
 const returnOrder = async (req, res) => {
-    try {
-      const  orderId=req.params.id
-      const {reason}=req.body
-      const result=await authServices.returnOrder(orderId, reason)
-    if(result.success){
-        res.json({ status: true, message:'Return request sent successfully'})
-     }else{
-         return res.json({ status: false, message: result.message }) 
-     }
-    } catch (error) {
-          console.log(error)
-        res.json({ status: false, message: error.message })
-
+  try {
+    const orderId = req.params.id;
+    const { reason } = req.body;
+    const result = await authServices.returnOrder(orderId, reason);
+    if (result.success) {
+      res.json({ status: true, message: "Return request sent successfully" });
+    } else {
+      return res.json({ status: false, message: result.message });
     }
-}
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: error.message });
+  }
+};
 
 const logout = async (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      return res.redirect(`/home?error=${err.message}`)
+      return res.redirect(`/home?error=${err.message}`);
     }
-    res.clearCookie("connect.sid")
-    res.redirect("/login")
-  })
-}
+    res.clearCookie("connect.sid");
+    res.redirect("/login");
+  });
+};
 
 module.exports = {
   getSignup,
@@ -601,5 +593,5 @@ module.exports = {
   getMyOrders,
   getOrderDetailPage,
   cancelOrder,
-  returnOrder
+  returnOrder,
 };

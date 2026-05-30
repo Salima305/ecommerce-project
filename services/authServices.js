@@ -443,36 +443,35 @@ const getUserOrders = async (email) => {
 };
 
 const cancelOrder = async (orderId) => {
-    const order = await Order.findById(orderId)
-   if (!order) return { success: false, message: 'Order not found' } 
-    if (order.status !== 'pending') {
-     return { success: false, message: 'Order cannot be cancelled' }
-    }
-   
-    for (const item of order.items) {
-        await Product.findByIdAndUpdate(item.product, {
-            $inc: { stock: item.quantity }
-        })
-    }
-    order.status = 'cancelled'
-    order.cancelledAt = new Date()
-    await order.save()
-     return { success: true, order }
-}
+  const order = await Order.findById(orderId);
+  if (!order) return { success: false, message: "Order not found" };
+  if (order.status !== "pending") {
+    return { success: false, message: "Order cannot be cancelled" };
+  }
+
+  for (const item of order.items) {
+    await Product.findByIdAndUpdate(item.product, {
+      $inc: { stock: item.quantity },
+    });
+  }
+  order.status = "cancelled";
+  order.cancelledAt = new Date();
+  await order.save();
+  return { success: true, order };
+};
 
 const returnOrder = async (orderId, reason) => {
-    const order = await Order.findById(orderId)
-if (!order) return { success: false, message: 'Order not found' }
-    if (order.status !== 'delivered') {
-        return { success: false, message: 'Only delivered orders can be returned' }
-
-    }
-    order.status = 'return-requested'
-    order.returnReason = reason
-    order.returnRequestedAt = new Date()
-    await order.save()
-     return { success: true, order }
-}
+  const order = await Order.findById(orderId);
+  if (!order) return { success: false, message: "Order not found" };
+  if (order.status !== "delivered") {
+    return { success: false, message: "Only delivered orders can be returned" };
+  }
+  order.status = "return-requested";
+  order.returnReason = reason;
+  order.returnRequestedAt = new Date();
+  await order.save();
+  return { success: true, order };
+};
 
 module.exports = {
   signup,
@@ -495,5 +494,5 @@ module.exports = {
   SingleOrder,
   getUserOrders,
   cancelOrder,
-  returnOrder
+  returnOrder,
 };

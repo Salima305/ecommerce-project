@@ -1,15 +1,27 @@
-const express=require("express")
-const router=express.Router()
-const authController=require("../controllers/authControllers")
+const express = require("express")
+const router = express.Router()
+const authController = require("../controllers/authControllers")
 const { body } = require("express-validator")
-const isAuth=require("../middleware/authMiddleware")
+const isAuth = require("../middleware/authMiddleware")
 
 
 router.get("/signup",authController.getSignup)
-router.post("/signup",[body("name").notEmpty().withMessage("Name is required"),body("email").isEmail().withMessage("Enter a valid email"),body("password")
-    .isLength({ min: 6 }).withMessage("Password must be at least 6 characters")
-    .matches(/[A-Z]/).withMessage("Password must contain one uppercase letter")
-    .matches(/[0-9]/).withMessage("Password must contain one number")],authController.postSignup)
+const signupValidation = [
+    body("name")
+        .notEmpty()
+        .withMessage("Name is required"),
+    body("email")
+        .isEmail()
+        .withMessage("Enter a valid email"),
+    body("password")
+        .isLength({ min: 6 })
+        .withMessage("Password must be at least 6 characters")
+        .matches(/[A-Z]/)
+        .withMessage("Password must contain one uppercase letter")
+        .matches(/[0-9]/)
+        .withMessage("Password must contain one number")
+]
+router.post("/signup", signupValidation, authController.postSignup)
 router.get("/login",authController.getLogin)
 router.post("/login",authController.postLogin)
 router.get("/home",isAuth,authController.getHome)
@@ -44,11 +56,4 @@ router.get("/orders/:id", isAuth, authController.getOrderDetailPage)
 router.patch("/order/:id/cancel", isAuth, authController.cancelOrder)
 router.patch("/order/:id/return", isAuth, authController.returnOrder)
 
-
-
-
-
-
-
-
-module.exports=router
+module.exports = router

@@ -217,15 +217,10 @@ placeOrderBtn.addEventListener("click", async (e) => {
         },
 
         key: "rzp_test_SsCPy8lpMDLqe7",
-
         amount: result.razorpayOrder.amount,
-
         currency: result.razorpayOrder.currency,
-
         order_id: result.razorpayOrder.id,
-
         name: "Emprtz",
-
         description: "Order Payment",
 
         handler: async function (response) {
@@ -309,18 +304,13 @@ function switchTab(tab) {
   });
 
   const activeBtn = document.getElementById(`tab-${tab}`);
-
   activeBtn.classList.add("active");
-
   const radio = activeBtn.querySelector("input");
-
   radio.checked = true;
-
   document.getElementById(`panel-${tab}`).classList.add("active");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   getCheckoutData();
   getAddress();
-
 });
