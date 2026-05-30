@@ -4,7 +4,9 @@ const authController = require("../controllers/authControllers")
 const { body } = require("express-validator")
 const isAuth = require("../middleware/authMiddleware")
 
-
+router.get("/", (req, res) => {
+    res.redirect("/login");
+})
 router.get("/signup",authController.getSignup)
 const signupValidation = [
     body("name")
