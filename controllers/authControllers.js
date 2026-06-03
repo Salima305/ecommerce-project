@@ -16,7 +16,7 @@ const postSignup = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.redirect(`/signup?error=${errors.array()[0].msg}`);
+      return res.json({success:false,error:errors.array()[0].msg})
     }
     const { name, email, password, confirmPassword } = req.body;
     const result = await authServices.signup(
@@ -26,12 +26,18 @@ const postSignup = async (req, res) => {
       confirmPassword,
     );
     if (result.success) {
-      res.redirect("/login");
+      req.session.user={
+        _id:result.user._id,
+        name:result.user.name,
+        email:result.user.email
+      }
+      res.json({success:true,redirectUrl:"/home"})
+     
     } else {
-      res.redirect(`/signup?error=${result.message}`);
+      res.json({success:false,error:result.message})
     }
   } catch (error) {
-    res.redirect(`/signup?error=${error.message}`);
+    return res.json({success:false,error:error.message});
   }
 };
 
@@ -51,12 +57,12 @@ const postLogin = async (req, res) => {
     const result = await authServices.login(email, password);
     if (result.success) {
       req.session.user = result.user._id;
-      return res.redirect("/home");
+     res.json({success:true,redirectUrl:"/home"})
     } else {
-      return res.redirect(`/login?error=${result.message}`);
+   res.json({success:false,error:result.message})
     }
   } catch (error) {
-    res.redirect(`/login?error=${error.message}`);
+   return res.json({success:false,error:error.message});
   }
 };
 

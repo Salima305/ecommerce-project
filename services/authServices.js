@@ -24,7 +24,7 @@ const signup = async (name, email, password, confirmPassword) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
-    return { success: true };
+    return { success: true,user:newUser };
   } catch (error) {
     return { success: false, message: error.message };
   }

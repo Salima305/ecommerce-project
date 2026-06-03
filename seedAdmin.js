@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const admin = require("./models/adminModels");
-mongoose.connect("mongodb://localhost:27017/emprtz");
+require("dotenv").config();
+mongoose.connect(process.env.MONGO_URI);
 async function addAdmin() {
   const email = "admin@gmail.com";
   const password = "1234";

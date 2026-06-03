@@ -43,16 +43,16 @@ const getprofileData = async () => {
   const response = await fetch("/profileData");
   const result = await response.json();
   const user = result.data;
-  document.getElementById("firstName").value = result.data.firstName;
-  document.getElementById("lastName").value = result.data.lastName;
+  document.getElementById("firstName").value = result.data.firstName||""
+  document.getElementById("lastName").value = result.data.lastName||""
   document.getElementById("email").value = result.data.email;
-  document.getElementById("phoneNumber").value = result.data.phone;
-  document.getElementById("dob").value = result.data.dob.slice(0, 10);
+  document.getElementById("phoneNumber").value = result.data.phone||""
+  document.getElementById("dob").value = result.data.dob?result.data.dob.slice(0, 10):""
 
-  const firstLetter = user.firstName.charAt(0).toUpperCase();
+  const firstLetter = user.firstName?user.firstName.charAt(0).toUpperCase():user.name.charAt(0).toUpperCase()
   document.querySelector(".avatar-placeholder").innerText = firstLetter;
-  document.getElementById("sidebar-name").innerText =
-    `${user.firstName} ${user.lastName}`;
+  document.getElementById("sidebar-name").innerText =user.firstName?
+    `${user.firstName} ${user.lastName}`:user.name
 };
 
 document.getElementById("save-profile").addEventListener("click", () => {

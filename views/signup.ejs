@@ -10,28 +10,28 @@
       <div class="alert alert-danger"><%= error %></div>
     <% } %>
 
-    <form action="/signup" method="POST">
+    <form id="signup">
       
       <div class="mb-3">
         <label>Name</label>
-        <input type="text" name="name" class="form-control" required>
+        <input type="text" name="name" id="name" class="form-control" required>
       </div>
 
       <div class="mb-3">
         <label>Email</label>
-        <input type="email" name="email" class="form-control" required>
+        <input type="email" name="email" id="email" class="form-control" required>
       </div>
 
       <div class="mb-3">
         <label>Password</label>
-        <input type="password" name="password" class="form-control" required>
+        <input type="password" name="password" id="password" class="form-control" required>
       </div>
 
       <div class="mb-3">
         <label>Confirm Password</label>
-        <input type="password" name="confirmPassword" class="form-control" required>
+        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" required>
       </div>
-
+  <div id="errorMsg" class="alert alert-danger d-none"></div>
       <button type="submit" class="btn btn-primary w-100">Sign Up</button>
 
     </form>
@@ -48,5 +48,31 @@
     setTimeout(() => {
         window.history.replaceState({}, document.title, window.location.pathname)
     }, 3000)
+
+    document.getElementById("signup").addEventListener("submit",async(e)=>{
+      e.preventDefault()
+
+      const formData={
+        name:document.getElementById("name").value,
+        email:document.getElementById("email").value,
+        password:document.getElementById("password").value,
+        confirmPassword:document.getElementById("confirmPassword").value,
+    }
+
+    const response=await fetch("/signup",{
+      method:"POST",
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(formData)
+    })
+    const data=await response.json()
+    
+    if (data.success) {
+      window.location.href=data.redirectUrl
+    } else {
+      const errorMsg=document.getElementById("errorMsg")
+    errorMsg.textContent=data.error
+    errorMsg.classList.remove("d-none")
+    }
+    })
 </script>
 <%- include('partials/footer') %>

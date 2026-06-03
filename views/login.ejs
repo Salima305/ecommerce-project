@@ -3,29 +3,28 @@
 <div class="container d-flex justify-content-center align-items-center" style="min-height:100vh;">
   <div class="card shadow p-4" style="width:400px;">
     
-    <h4 class="text-center mb-4">Welcome Back!</h4>
+    <h4 class="text-center mb-4">Welcome Back</h4>
 
     <% if (error) { %>
       <div class="alert alert-danger"><%= error %></div>
     <% } %>
 
-    <form action="/login" method="POST">
-      
+    <form id="login">
       <div class="mb-3">
         <label>Email</label>
-        <input type="email" name="email" class="form-control" required>
+        <input type="email" name="email" id="email" class="form-control" required>
       </div>
 
       <div class="mb-3">
         <label>Password</label>
-        <input type="password" name="password" class="form-control" required>
+        <input type="password" name="password" id="password" class="form-control" required>
       </div>
 
+      <div id="errorMsg" class="alert alert-danger d-none"></div>
+
       <button type="submit" class="btn btn-primary w-100">Login</button>
-
     </form>
-
-    <p class="text-center mt-3">
+     <p class="text-center mt-3">
       Don't have an account? <a href="/signup">Sign Up</a>
     </p>
 
@@ -33,9 +32,33 @@
 </div>
 
 
+
 <script>
     setTimeout(() => {
         window.history.replaceState({}, document.title, window.location.pathname)
     }, 3000)
+document.getElementById("login").addEventListener("submit",async(e)=>{
+      e.preventDefault()
+
+      const formData={
+        email:document.getElementById("email").value,
+        password:document.getElementById("password").value
+    }
+     const response=await fetch("/login",{
+      method:"POST",
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(formData)
+    })
+    const data=await response.json()
+    if (data.success) {
+      window.location.href=data.redirectUrl
+    } else {
+      const errorMsg=document.getElementById("errorMsg")
+    errorMsg.textContent=data.error
+    errorMsg.classList.remove("d-none")
+    }
+    })
+ 
+
 </script>
 <%- include('partials/footer') %>
