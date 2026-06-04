@@ -109,6 +109,48 @@
       position: relative;
     }
 
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #2e0202;
+  cursor: pointer;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .emprtz-nav {
+    flex-wrap: wrap;
+    padding: 16px 20px;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .nav-middle,
+  .nav-right {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--light-border);
+  }
+
+  .nav-middle.open,
+  .nav-right.open {
+    display: flex;
+  }
+
+  .search-wrapper input {
+    width: 100%;
+  }
+}
+
     .cart-wrapper{
    position: relative;
     }
@@ -204,7 +246,9 @@
 <nav class="emprtz-nav">
   
   <a href="/home" class="nav-logo">Emprtz</a>
-
+<button class="hamburger" id="hamburger">
+  <i class="bi bi-list"></i>
+</button>
   
   <div class="nav-middle">
     <a href="/collection">Collection</a>
@@ -263,6 +307,15 @@ document.addEventListener("click", () => {
 userMenu.addEventListener("click", (e) => {
 
     e.stopPropagation()
+})
+
+const hamburger=document.getElementById('hamburger')
+const navMiddle=document.querySelector('.nav-middle')
+const navRight=document.querySelector('.nav-right')
+
+hamburger.addEventListener('click',()=>{
+  navMiddle.classList.toggle('open')
+  navRight.classList.toggle('open')
 })
 
 </script>
