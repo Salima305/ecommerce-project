@@ -64,12 +64,104 @@ const renderCheckoutItems = (items) => {
   }
 };
 
+ const saveInlineAddress = async () => {
+  const body = {
+    fullName: document.getElementById("addr-fullName").value.trim(),
+    phone: document.getElementById("addr-phone").value.trim(),
+    house: document.getElementById("addr-house").value.trim(),
+    landmark: document.getElementById("addr-landmark").value.trim(),
+    area: document.getElementById("addr-area").value.trim(),
+    city: document.getElementById("addr-city").value.trim(),
+    state: document.getElementById("addr-state").value.trim(),
+    pincode: document.getElementById("addr-pincode").value.trim(),
+  };
+
+  if (!body.fullName || !body.phone || !body.house || !body.area || !body.city || !body.state || !body.pincode) {
+    Swal.fire({ icon: "warning", title: "Missing Fields", text: "Please fill all required fields." });
+    return;
+  }
+
+  const response = await fetch("/addAddress", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+
+  const result = await response.json();
+
+  if (result.status) {
+    Swal.fire({ icon: "success", title: "Address Saved" }).then(() => {
+      document.getElementById("addressContainer").innerHTML = "";
+      getAddress();
+    });
+  } else {
+    Swal.fire({ icon: "error", title: "Failed", text: result.message });
+  }
+};
+
 const getAddress = async () => {
   const response = await fetch("/getAddress");
   const result = await response.json();
 
   console.log(result);
   const container = document.getElementById("addressContainer");
+
+   if (!result.addresses || result.addresses.length === 0) {
+    container.innerHTML = `
+      <div style="margin-bottom: 20px; font-size: 0.85rem; color: var(--muted); font-style: italic;">
+        No saved addresses. Add one below to continue.
+      </div>
+      <div id="inline-address-form">
+        <div class="form-row">
+          <div class="field-group">
+            <label>FULL NAME <span class="required">*</span></label>
+            <input type="text" id="addr-fullName" placeholder="Full name">
+          </div>
+          <div class="field-group">
+            <label>PHONE <span class="required">*</span></label>
+            <input type="text" id="addr-phone" placeholder="Phone number">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field-group">
+            <label>HOUSE / FLAT <span class="required">*</span></label>
+            <input type="text" id="addr-house" placeholder="House / Flat no.">
+          </div>
+          <div class="field-group">
+            <label>LANDMARK</label>
+            <input type="text" id="addr-landmark" placeholder="Landmark">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field-group">
+            <label>AREA <span class="required">*</span></label>
+            <input type="text" id="addr-area" placeholder="Area / Street">
+          </div>
+          <div class="field-group">
+            <label>CITY <span class="required">*</span></label>
+            <input type="text" id="addr-city" placeholder="City">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field-group">
+            <label>STATE <span class="required">*</span></label>
+            <input type="text" id="addr-state" placeholder="State">
+          </div>
+          <div class="field-group">
+            <label>PINCODE <span class="required">*</span></label>
+            <input type="text" id="addr-pincode" placeholder="Pincode">
+          </div>
+        </div>
+        <button type="button" id="save-address-btn" class="place-order-btn" style="width: auto; padding: 14px 32px; margin-top: 8px;">
+          SAVE ADDRESS
+        </button>
+      </div>
+    `;
+
+    document.getElementById("save-address-btn").addEventListener("click", saveInlineAddress);
+    return;
+  }
+
   result.addresses.forEach((address) => {
     container.innerHTML += `
 
@@ -80,10 +172,8 @@ const getAddress = async () => {
       <input
          type="radio"
          value="${address._id}"
-         name="shippingAddress"
-      >
-
-      <div class="address-content">
+         name="shippingAddress">
+    <div class="address-content">
 
          <h3>${address.fullName}</h3>
 
