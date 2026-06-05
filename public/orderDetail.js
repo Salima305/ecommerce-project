@@ -188,14 +188,14 @@ const renderStatusTracker = (status) => {
     let labelClass = "";
     let symbol = index + 1;
 
-    if (index < currentIndex) {
-      dotClass = "completed";
-      labelClass = "completed";
-      symbol = "✓";
-    } else if (index === currentIndex) {
-      dotClass = "active";
-      labelClass = "active";
-    }
+   if (index < currentIndex || (index === currentIndex && status === "delivered")) {
+  dotClass = "completed";
+  labelClass = "completed";
+  symbol = "✓";
+} else if (index === currentIndex) {
+  dotClass = "active";
+  labelClass = "active";
+}
 
     tracker.innerHTML += `
         <div class="tracker-step">
@@ -203,7 +203,6 @@ const renderStatusTracker = (status) => {
             <span class="tracker-label ${labelClass}">${labels[index]}</span>
         </div>`;
 
-    // add line between steps (not after last)
     if (index < steps.length - 1) {
       const lineClass = index < currentIndex ? "completed" : "";
       tracker.innerHTML += `<div class="tracker-line ${lineClass}"></div>`;
