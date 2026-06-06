@@ -84,12 +84,16 @@ window.addToCart = async () => {
     } else {
       btn.textContent = "ADD TO BAG";
       btn.disabled = false;
+      if(result.message==="Please login first"){
+       window.location.href = `/login?redirect=${window.location.pathname + window.location.search}`;
+      }else{
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: result.message,
       });
     }
+  }
   } catch (error) {
     console.log(error);
     btn.textContent = "ADD TO BAG";

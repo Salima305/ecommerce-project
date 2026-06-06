@@ -65,7 +65,7 @@ const getcartData = () => {
                     <span class="ref">
                         ${product.category?.name || ""}
                     </span>
-                <span style="color:red">${qty>product.stock? `only ${product.stock} left in stock` :""}</span>
+                <span style="color:red">${product.stock===0?"Out of stock":qty>product.stock? `only ${product.stock} left in stock` :""}</span>
                 </div>
                 <div class="qty-control">
                     <button onclick="updateQty('${product._id}', -1)">−</button>

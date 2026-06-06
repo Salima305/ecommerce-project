@@ -57,7 +57,8 @@ const postLogin = async (req, res) => {
     const result = await authServices.login(email, password);
     if (result.success) {
       req.session.user = result.user._id;
-     res.json({success:true,redirectUrl:"/home"})
+     const redirectUrl = req.query.redirect || '/home';
+     res.json({ success: true, redirectUrl });
     } else {
    res.json({success:false,error:result.message})
     }
