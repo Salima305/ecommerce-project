@@ -3,8 +3,13 @@ const changePassword = async () => {
   const newPassword = document.getElementById("newPass").value;
   const confirmPassword = document.getElementById("confPass").value;
 
+if (!currentPassword || !newPassword || !confirmPassword) {
+  showToast("All fields are required");
+  return;
+}
+
   if (newPassword !== confirmPassword) {
-    showToast("Passwords do not");
+    showToast("Passwords do not match");
     return;
   }
 
@@ -12,6 +17,7 @@ const changePassword = async () => {
     showToast("Password must be at least 8 characters");
     return;
   }
+  
 
   const response = await fetch("/changepassword", {
     method: "PATCH",

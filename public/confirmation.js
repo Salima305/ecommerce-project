@@ -69,7 +69,7 @@ async function loadOrder() {
        </div>
         `
       })
-
+document.getElementById('view-order-btn').href=`/orders/${order._id}`
     }
 
     document.addEventListener(

@@ -248,13 +248,25 @@ const getprofileData = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const userId = req.session.user;
-    await authServices.updateProfile(userId, req.body);
-
+    const { firstName,
+    lastName,
+    email,
+    phone,
+    dob,
+    gender}=req.body
+    if(!firstName||!lastName){
+      return res.json({ status: false, message: "Name fields cannot be empty" });
+    }
+    if (phone&&!/^\d{10}$/.test(phone)){
+      return res.json({ status: false, message:"Enter a valid 10-digit phone number"})
+    }
+        await authServices.updateProfile(userId, req.body);
     return res.json({ status: true });
   } catch (error) {
     console.error("updateProfile error:", error);
     return res.json({ status: false, message: "Failed to update profile" });
   }
+
 };
 
 const addAddress = async (req, res) => {
@@ -262,6 +274,18 @@ const addAddress = async (req, res) => {
     const { fullName, phone, house, area, landmark, city, state, pincode } =
       req.body;
 
+const fields=[fullName, house,area,city,state,pincode]
+  if(fields.some(f=>!f)){
+    
+    return res.json({ status: false, message: "All fields are required" });
+  }
+if(!/^\d{10}$/.test(phone)){
+  return res.json({ status: false, message: "Enter a valid 10-digit phone number"})
+  }
+
+if(!/^\d{6}$/.test(pincode)){
+  return res.json({ status: false, message: "Enter a valid pincode"})
+  }
     const userId = req.session.user;
     const addressData = { ...req.body, userId };
     const saveAddress = await authServices.addAddress(addressData);
@@ -319,7 +343,23 @@ const updateAddress = async (req, res) => {
     const userId = req.session.user;
     const { fullName, phone, house, area, landmark, city, state, pincode } =
       req.body;
-    await authServices.updateUserAddress(Id, userId, {
+
+const fields=[fullName, house,area,city,state,pincode]
+  if(fields.some(f=>!f)){
+    
+    return res.json({ status: false, message: "All fields are required" });
+  }
+if(!/^\d{10}$/.test(phone)){
+  return res.json({ status: false, message: "Enter a valid 10-digit phone number"})
+  
+}
+
+if(!/^\d{6}$/.test(pincode)){
+  return res.json({ status: false, message: "Enter a valid pincode"})
+
+}
+
+await authServices.updateUserAddress(Id, userId, {
       fullName,
       phone,
       house,
@@ -343,13 +383,25 @@ const changePassword = async (req, res) => {
   try {
     const userId = req.session.user;
     const { currentPassword, newPassword, confirmPassword } = req.body;
+       const fields=[currentPassword, newPassword, confirmPassword]
+  if(fields.some(f=>!f)){
+    return res.json({
+        status: false,
+        message:("All fields are required")
+    })
+  }
     if (newPassword !== confirmPassword) {
       return res.json({
         status: false,
         message: "passwords do not match",
       });
     }
-
+if(newPassword.length < 8){
+   return res.json({
+        status: false,
+        message: "passwords should contain min 8 characters",
+      });
+    }
     await authServices.changeUSerPassword(userId, currentPassword, newPassword);
     res.json({
       status: true,

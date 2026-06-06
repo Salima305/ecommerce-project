@@ -65,6 +65,16 @@ const updateProfile = async () => {
   const email = document.getElementById("email").value;
   const phone = document.getElementById("phoneNumber").value;
   const dob = document.getElementById("dob").value;
+
+  if(!firstName || !lastName){
+    showToast("Name fields cannot be empty")
+    return;
+  }
+
+  if(!/^\d{10}$/.test(phone)){
+  showToast("Enter a valid 10-digit phone number")
+  return
+}
   const response = await fetch("/updateProfile", {
     headers: {
       "Content-Type": "application/json",
@@ -87,15 +97,29 @@ const updateProfile = async () => {
 };
 
 const addAddress = async () => {
-  const fullName = document.getElementById("fullName").value;
-  const phone = document.getElementById("phone").value;
-  const house = document.getElementById("house").value;
-  const area = document.getElementById("area").value;
-  const landmark = document.getElementById("landmark").value;
-  const city = document.getElementById("city").value;
-  const state = document.getElementById("state").value;
-  const pincode = document.getElementById("pincode").value;
+  const fullName = document.getElementById("fullName").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const house = document.getElementById("house").value.trim();
+  const area = document.getElementById("area").value.trim();
+  const landmark = document.getElementById("landmark").value.trim();
+  const city = document.getElementById("city").value.trim();
+  const state = document.getElementById("state").value.trim();
+  const pincode = document.getElementById("pincode").value.trim();
 
+  const fields=[fullName, house,area,city,state,pincode]
+  if(fields.some(f=>!f)){
+    showToast("All fields are required")
+    return;
+  }
+if(!/^\d{10}$/.test(phone)){
+  showToast("Enter a valid 10-digit phone number")
+  return
+}
+
+if(!/^\d{6}$/.test(pincode)){
+  showToast("Enter a valid pincode")
+  return
+}
   const response = await fetch("/addAddress", {
     method: "POST",
     headers: {
@@ -201,29 +225,58 @@ document
 
 const saveEditAddress = async () => {
   const id = document.getElementById("edit-id").value;
+
+  const fullName = document.getElementById("edit-fullName").value.trim();
+  const phone = document.getElementById("edit-phone").value.trim();
+  const house = document.getElementById("edit-house").value.trim();
+  const area = document.getElementById("edit-area").value.trim();
+  const landmark = document.getElementById("edit-landmark").value.trim();
+  const city = document.getElementById("edit-city").value.trim();
+  const state = document.getElementById("edit-state").value.trim();
+  const pincode = document.getElementById("edit-pincode").value.trim();
+
+  const fields = [fullName, house, area, city, state, pincode];
+
+  if (fields.some(f => !f)) {
+    showToast("All fields are required");
+    return;
+  }
+
+  if (!/^\d{10}$/.test(phone)) {
+    showToast("Enter a valid 10-digit phone number");
+    return;
+  }
+
+  if (!/^\d{6}$/.test(pincode)) {
+    showToast("Enter a valid pincode");
+    return;
+  }
+
   const response = await fetch(`/address/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      fullName: document.getElementById("edit-fullName").value,
-      phone: document.getElementById("edit-phone").value,
-      house: document.getElementById("edit-house").value,
-      area: document.getElementById("edit-area").value,
-      landmark: document.getElementById("edit-landmark").value,
-      city: document.getElementById("edit-city").value,
-      state: document.getElementById("edit-state").value,
-      pincode: document.getElementById("edit-pincode").value,
+      fullName,
+      phone,
+      house,
+      area,
+      landmark,
+      city,
+      state,
+      pincode,
     }),
   });
 
   const result = await response.json();
+
   if (result.status) {
     showToast("Address updated");
     getAddress();
+
     const modal = bootstrap.Modal.getInstance(
-      document.getElementById("editAddressModal"),
+      document.getElementById("editAddressModal")
     );
     modal.hide();
   } else {
