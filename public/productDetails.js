@@ -84,7 +84,9 @@ window.addToCart = async () => {
     } else {
       btn.textContent = "ADD TO BAG";
       btn.disabled = false;
+       console.log("result.message:", result.message);
       if(result.message==="Please login first"){
+         console.log("redirecting to:", `/login?redirect=${window.location.pathname + window.location.search}`);
        window.location.href = `/login?redirect=${window.location.pathname + window.location.search}`;
       }else{
       Swal.fire({
@@ -95,7 +97,7 @@ window.addToCart = async () => {
     }
   }
   } catch (error) {
-    console.log(error);
+    console.log("catch error:", error);
     btn.textContent = "ADD TO BAG";
     btn.disabled = false;
   }

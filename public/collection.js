@@ -91,6 +91,9 @@ async function addToCart(productId) {
       setTimeout(() => {
         window.location.href = "/cart";
       }, 800);
+      } else {
+  if (result.message === "Please login first") {
+    window.location.href = `/login?redirect=${window.location.pathname + window.location.search}`;
     } else {
       Swal.fire({
         icon: "error",
@@ -98,7 +101,9 @@ async function addToCart(productId) {
         text: result.message,
       });
     }
-  } catch (error) {
+  }
+ } catch (error) {
     console.log(error);
   }
 }
+

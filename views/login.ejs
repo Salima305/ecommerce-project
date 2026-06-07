@@ -34,9 +34,10 @@
 
 
 <script>
-    setTimeout(() => {
-        window.history.replaceState({}, document.title, window.location.pathname)
-    }, 3000)
+  const redirectPath = new URLSearchParams(window.location.search).get('redirect') || '/home';
+    // setTimeout(() => {
+    //     window.history.replaceState({}, document.title, window.location.pathname)
+    // }, 3000)
 document.getElementById("login").addEventListener("submit",async(e)=>{
       e.preventDefault()
 
@@ -51,7 +52,7 @@ document.getElementById("login").addEventListener("submit",async(e)=>{
     })
     const data=await response.json()
     if (data.success) {
-      window.location.href=data.redirectUrl
+      window.location.href=redirectPath
     } else {
       const errorMsg=document.getElementById("errorMsg")
     errorMsg.textContent=data.error
