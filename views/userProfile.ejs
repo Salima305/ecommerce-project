@@ -1,7 +1,7 @@
 <%- include('partials/userHeader', { title: 'userProfile' }) %>
 
   <style>
-    /* ─── Design Tokens (matching home page) ───────────────────── */
+    
     :root {
       --cream:        #f5f0e8;
       --dark:         #2e0303;
@@ -14,8 +14,6 @@
       --font-sans:    'Lato', sans-serif;
     }
 
-   
-    /* ─── Page Header ───────────────────────────────────────────── */
     .profile-header {
       max-width: 1100px;
       margin: 0 auto;
@@ -40,7 +38,6 @@
       line-height: 1.1;
     }
 
-    /* ─── Main Layout ───────────────────────────────────────────── */
     .profile-layout {
       max-width: 1100px;
       margin: 0 auto;
@@ -51,7 +48,7 @@
       align-items: start;
     }
 
-    /* ─── Sidebar ───────────────────────────────────────────────── */
+   
     .profile-sidebar {
       position: sticky;
       top: 90px;
@@ -163,10 +160,10 @@
 
     .sidebar-nav li a i { font-size: 1rem; opacity: 0.7; }
 
-    /* ─── Main Content ──────────────────────────────────────────── */
+    
     .profile-main { min-width: 0; }
 
-    /* Section divider title */
+   
     .section-title {
       font-size: 0.68rem;
       letter-spacing: 4px;
@@ -185,7 +182,7 @@
       background: var(--light-border);
     }
 
-    /* ─── Profile Info Card ─────────────────────────────────────── */
+   
     .info-card {
       background: var(--surface);
       border: 1px solid var(--light-border);
@@ -253,7 +250,6 @@
       border-top: 1px solid var(--light-border);
     }
 
-    /* ─── Buttons ───────────────────────────────────────────────── */
     .btn-emprtz {
       font-size: 0.7rem;
       letter-spacing: 2.5px;
@@ -298,7 +294,6 @@
       color: #fff;
     }
 
-    /* ─── Order History ─────────────────────────────────────────── */
     .order-item {
       border: 1px solid var(--light-border);
       margin-bottom: 16px;
@@ -390,87 +385,6 @@
       gap: 8px;
     }
 
-    /* ─── Wishlist Grid ─────────────────────────────────────────── */
-    .wishlist-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .wishlist-card {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--light-border);
-      transition: border-color 0.2s;
-      cursor: pointer;
-    }
-
-    .wishlist-card:hover { border-color: var(--dark); }
-
-    .wishlist-card-img {
-      width: 100%;
-      aspect-ratio: 3/4;
-      object-fit: cover;
-      display: block;
-      background: #e8e0d4;
-      transition: transform 0.4s ease;
-    }
-
-    .wishlist-card:hover .wishlist-card-img { transform: scale(1.04); }
-
-    .wishlist-card-img-placeholder {
-      width: 100%;
-      aspect-ratio: 3/4;
-      background: linear-gradient(135deg, #e8e0d4 0%, #d4cbbf 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 2rem;
-    }
-
-    .wishlist-remove {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(245,240,232,0.92);
-      border: none;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 0.85rem;
-      color: var(--accent);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .wishlist-card:hover .wishlist-remove { opacity: 1; }
-
-    .wishlist-info {
-      padding: 12px 14px;
-      border-top: 1px solid var(--light-border);
-    }
-
-    .wishlist-item-name {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 0.88rem;
-      color: var(--dark);
-      margin-bottom: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .wishlist-item-price {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    /* ─── Address Book ──────────────────────────────────────────── */
     .address-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -547,7 +461,6 @@
       text-transform: uppercase;
     }
 
-    /* ─── Tabs ──────────────────────────────────────────────────── */
     .emprtz-tabs {
       display: flex;
       gap: 0;
@@ -621,7 +534,6 @@
   }
 }
    
-    /* ─── Footer ────────────────────────────────────────────────── */
     .emprtz-footer {
       border-top: 1px solid var(--light-border);
       padding: 30px 40px;
@@ -656,7 +568,6 @@
 
     .footer-icons a:hover { color: var(--dark); }
 
-    /* ─── Responsive ────────────────────────────────────────────── */
     @media (max-width: 900px) {
       .profile-layout {
         grid-template-columns: 1fr;
@@ -708,17 +619,13 @@
   </style>
 
 
- 
-  <!-- ─── Page Header ──────────────────────────────────────────── -->
   <header class="profile-header">
     <p class="page-eyebrow">Account</p>
     <h1>My Profile</h1>
   </header>
 
-  <!-- ─── Profile Layout ──────────────────────────────────────── -->
   <div class="profile-layout">
 
-    <!-- Sidebar -->
     <aside class="profile-sidebar">
       <div class="avatar-wrap">
         <span class="avatar-placeholder"></span>
@@ -730,10 +637,8 @@
       <ul class="sidebar-nav">
         <li><a href="#" class="active" data-tab="info"><i class="bi bi-person"></i> Profile</a></li>
         <li><a href="#" data-tab="orders"><i class="bi bi-bag-check"></i> Orders</a></li>
-        <!-- <li><a href="#" data-tab="wishlist"><i class="bi bi-heart"></i> Wishlist</a></li> -->
         <li><a href="#" data-tab="addresses"><i class="bi bi-geo-alt"></i> Addresses</a></li>
         <li><a href="#" data-tab="security"><i class="bi bi-shield-lock"></i> Security</a></li>
-        <!-- <li><a href="#" id="logout-link"><i class="bi bi-box-arrow-right"></i> Sign Out</a></li> -->
       </ul>
     </aside>
 

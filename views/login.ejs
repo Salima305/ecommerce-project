@@ -35,9 +35,6 @@
 
 <script>
   const redirectPath = new URLSearchParams(window.location.search).get('redirect') || '/home';
-    // setTimeout(() => {
-    //     window.history.replaceState({}, document.title, window.location.pathname)
-    // }, 3000)
 document.getElementById("login").addEventListener("submit",async(e)=>{
       e.preventDefault()
 
