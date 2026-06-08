@@ -12,7 +12,7 @@ const crypto = require("crypto");
 const Order = require("../models/orderModel");
 const Payment = require("../models/paymentModel");
 
-const signup = async (name, email, password, confirmPassword) => {
+const signup = async (firstName,lastName, email, password, confirmPassword) => {
   try {
     const existing = await User.findOne({ email });
     if (existing) {
@@ -22,7 +22,7 @@ const signup = async (name, email, password, confirmPassword) => {
       return { success: false, message: "Password doesn't match" };
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, email, password: hashedPassword });
+    const newUser = new User({ firstName,lastName, email, password: hashedPassword });
     await newUser.save();
     return { success: true,user:newUser };
   } catch (error) {

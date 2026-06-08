@@ -9,9 +9,12 @@ router.get("/", (req, res) => {
 })
 router.get("/signup",authController.getSignup)
 const signupValidation = [
-    body("name")
+    body("firstName")
         .notEmpty()
-        .withMessage("Name is required"),
+        .withMessage("firstName is required"),
+        body("lastName")
+        .notEmpty()
+        .withMessage("lastName is required"),
     body("email")
         .isEmail()
         .withMessage("Enter a valid email"),
@@ -31,14 +34,14 @@ router.get("/collection",authController.getCollectionPage)
 router.get("/getProductsData",authController.getAllProducts)
 router.get("/productDetails",authController.getDetailPage)
 router.get("/getproductDetails",authController.getProductDetails)
-router.get("/cart",authController.getCart)
-router.post("/addToCart",authController.addToCart)
-router.get("/cartData",isAuth,authController.getcartData)
+router.get("/cart",isAuth,authController.getCart)
+router.post("/addToCart",isAuth,authController.addToCart)
+router.get("/cartData",authController.getcartData)
 router.post("/removeFromCart", isAuth, authController.removeFromCart)
 router.patch("/cart/updateQty", isAuth, authController.updateQty)
 router.post("/applyCoupon", isAuth, authController.applyCoupon)
 
-router.get("/userProfile",authController.getUserProfile)
+router.get("/userProfile",isAuth,authController.getUserProfile)
 router.get("/profileData",isAuth,authController.getprofileData)
 router.patch("/updateProfile",isAuth,authController.updateProfile)
 router.post("/addAddress",authController.addAddress)

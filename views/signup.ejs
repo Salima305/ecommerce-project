@@ -13,8 +13,13 @@
     <form id="signup">
       
       <div class="mb-3">
-        <label>Name</label>
-        <input type="text" name="name" id="name" class="form-control" required>
+        <label>First Name</label>
+        <input type="text" name="firstName" id="firstName" class="form-control" required>
+      </div>
+
+       <div class="mb-3">
+        <label>Last Name</label>
+        <input type="text" name="lastName" id="lastName" class="form-control" required>
       </div>
 
       <div class="mb-3">
@@ -53,7 +58,8 @@
       e.preventDefault()
 
       const formData={
-        name:document.getElementById("name").value,
+        firstName:document.getElementById("firstName").value,
+        lastName:document.getElementById("lastName").value,
         email:document.getElementById("email").value,
         password:document.getElementById("password").value,
         confirmPassword:document.getElementById("confirmPassword").value,

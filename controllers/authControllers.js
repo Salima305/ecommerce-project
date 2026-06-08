@@ -18,9 +18,10 @@ const postSignup = async (req, res) => {
     if (!errors.isEmpty()) {
       return res.json({success:false,error:errors.array()[0].msg})
     }
-    const { name, email, password, confirmPassword } = req.body;
+    const { firstName,lastName, email, password, confirmPassword } = req.body;
     const result = await authServices.signup(
-      name,
+      firstName,
+      lastName,
       email,
       password,
       confirmPassword,
@@ -28,7 +29,7 @@ const postSignup = async (req, res) => {
     if (result.success) {
       req.session.user={
         _id:result.user._id,
-        name:result.user.name,
+        firstName:result.user.firstName,
         email:result.user.email
       }
       res.json({success:true,redirectUrl:"/home"})
@@ -128,6 +129,10 @@ const addToCart = async (req, res) => {
 };
 
 const getcartData = async (req, res) => {
+  if (!req.session.user) {
+    return res.json({ status: true, data: { items: [] } });
+  }
+  
   const userId = req.session.user;
   const data = await authServices.cartItems(userId);
   res.json({ status: true, data: data });
