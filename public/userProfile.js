@@ -48,6 +48,7 @@ const getprofileData = async () => {
   document.getElementById("email").value = result.data.email;
   document.getElementById("phoneNumber").value = result.data.phone||""
   document.getElementById("dob").value = result.data.dob?result.data.dob.slice(0, 10):""
+  document.getElementById("gender").value=result.data.gender
 
   const firstLetter = user.firstName?user.firstName.charAt(0).toUpperCase():user.name.charAt(0).toUpperCase()
   document.querySelector(".avatar-placeholder").innerText = firstLetter;
@@ -65,6 +66,8 @@ const updateProfile = async () => {
   const email = document.getElementById("email").value;
   const phone = document.getElementById("phoneNumber").value;
   const dob = document.getElementById("dob").value;
+  const gender = document.getElementById("gender").value;
+
 
   if(!firstName || !lastName){
     showToast("Name fields cannot be empty")
