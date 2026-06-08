@@ -361,9 +361,11 @@
 </style>
 
 <div class="cart-page">
-  <h2>Shopping Bag</h2>
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Shopping Bag</h2>
+    <button id="clearCartBtn" class="btn btn-primary">Clear Cart</button>
+  </div>
   <span class="cart-subtitle">Your curated selection of heirlooms</span>
-
   <div class="cart-layout">
 
    
@@ -426,4 +428,4 @@
 <%- include('partials/userFooter') %>
 
 <script src="cart.js"></script>
-<script src="checkout.js"></script>
+<!-- <script src="checkout.js"></script> -->

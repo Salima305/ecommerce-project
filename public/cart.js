@@ -20,7 +20,8 @@ const getcartData = () => {
       const cartContainer = document.getElementById("cart-items");
       cartContainer.innerHTML = "";
 
-      if (!cart.items || cart.items.length === 0) {
+      if (!cart || !cart.items || cart.items.length === 0) {
+        document.getElementById("clearCartBtn").style.display = "none";
         document.getElementById("cart-count").textContent = 0;
         cartContainer.innerHTML = `
             <p style="font-family:'Cormorant Garamond',serif;
@@ -65,7 +66,7 @@ const getcartData = () => {
                     <span class="ref">
                         ${product.category?.name || ""}
                     </span>
-                <span style="color:red">${product.stock===0?"Out of stock":qty>product.stock? `only ${product.stock} left in stock` :""}</span>
+                <span style="color:red">${product.stock === 0 ? "Out of stock" : qty > product.stock ? `only ${product.stock} left in stock` : ""}</span>
                 </div>
                 <div class="qty-control">
                     <button onclick="updateQty('${product._id}', -1)">−</button>
@@ -83,11 +84,11 @@ const getcartData = () => {
                 </button>
                 </div>`;
       });
-    const shipping = subtotal > 0 ? 50 : 0;
-    document.getElementById("subtotal").textContent =
+      const shipping = subtotal > 0 ? 50 : 0;
+      document.getElementById("subtotal").textContent =
         `₹${subtotal.toLocaleString()}`;
-    document.getElementById("shipping").textContent = `₹${shipping}`;
-    document.getElementById("total").textContent =
+      document.getElementById("shipping").textContent = `₹${shipping}`;
+      document.getElementById("total").textContent =
         `₹${(subtotal + shipping).toLocaleString()}`;
     });
 };
@@ -124,7 +125,7 @@ const removeItem = async (productId) => {
   if (result.isConfirmed) {
     const response = await fetch("/removeFromCart", {
       method: "POST",
-     headers: {
+      headers: {
         "Content-Type": "application/json",
       },
 
@@ -181,4 +182,29 @@ document.getElementById("apply-coupon").addEventListener("click", async () => {
 });
 document.getElementById("checkout-btn").addEventListener("click", () => {
   window.location.href = "/checkout";
+});
+
+document.getElementById("clearCartBtn").addEventListener("click", async () => {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "This cart will be deleted",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete it",
+  });
+  if (result.isConfirmed) {
+    const response = await fetch("/clearCart", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({}),
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      location.reload()
+    }
+  }
 });

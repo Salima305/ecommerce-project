@@ -129,6 +129,15 @@ const addToCart = async (userId, productId) => {
   }
 };
 
+const clearCart=async(userId)=>{
+  try {
+    const cart =await Cart.deleteOne({userId})
+    return ({success:true,message: "Cart is cleared"})
+  } catch (error) {
+    return{success:false,message:"Error in clearing cart"}
+  }
+}
+
 const cartItems = async (userId) => {
   try {
     const cart = await Cart.findOne({ userId }).populate("items.product");
@@ -495,4 +504,5 @@ module.exports = {
   getUserOrders,
   cancelOrder,
   returnOrder,
+  clearCart
 };

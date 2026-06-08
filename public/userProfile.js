@@ -67,6 +67,7 @@ const updateProfile = async () => {
   const phone = document.getElementById("phoneNumber").value;
   const dob = document.getElementById("dob").value;
   const gender = document.getElementById("gender").value;
+  console.log(gender)
 
 
   if(!firstName || !lastName){
@@ -89,6 +90,7 @@ const updateProfile = async () => {
       phone,
       email,
       dob,
+      gender
     }),
   });
   const result = await response.json();

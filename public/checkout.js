@@ -204,8 +204,10 @@ const getAddress = async () => {
 };
 
 const placeOrderBtn = document.getElementById("place-order-btn");
+console.log(placeOrderBtn);
 
-placeOrderBtn.addEventListener("click", async (e) => {
+
+document.getElementById("place-order-btn").addEventListener("click", async (e) => {
   e.preventDefault();
 
   const selectedAddress = document.querySelector(

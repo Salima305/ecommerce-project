@@ -128,6 +128,19 @@ const addToCart = async (req, res) => {
   }
 };
 
+const clearCart=async(req,res)=>{
+  try {
+     const userId = req.session.user;
+    const { productId } = req.body;
+    const result = await authServices.clearCart(userId, productId);
+    res.json(result)
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: "Error in clearing the cart" });
+  }
+  
+}
+
 const getcartData = async (req, res) => {
   if (!req.session.user) {
     return res.json({ status: true, data: { items: [] } });
@@ -658,4 +671,5 @@ module.exports = {
   getOrderDetailPage,
   cancelOrder,
   returnOrder,
+  clearCart
 };
