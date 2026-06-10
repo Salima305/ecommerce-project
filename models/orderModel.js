@@ -65,7 +65,7 @@ const addressSchema = new mongoose.Schema(
 const orderSchema = new mongoose.Schema(
   {
     customer: {
-      name: {
+      firstName: {
         type: String,
         required: true,
       },

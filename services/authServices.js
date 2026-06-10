@@ -12,7 +12,13 @@ const crypto = require("crypto");
 const Order = require("../models/orderModel");
 const Payment = require("../models/paymentModel");
 
-const signup = async (firstName,lastName, email, password, confirmPassword) => {
+const signup = async (
+  firstName,
+  lastName,
+  email,
+  password,
+  confirmPassword,
+) => {
   try {
     const existing = await User.findOne({ email });
     if (existing) {
@@ -22,9 +28,14 @@ const signup = async (firstName,lastName, email, password, confirmPassword) => {
       return { success: false, message: "Password doesn't match" };
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ firstName,lastName, email, password: hashedPassword });
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    });
     await newUser.save();
-    return { success: true,user:newUser };
+    return { success: true, user: newUser };
   } catch (error) {
     return { success: false, message: error.message };
   }
@@ -129,14 +140,14 @@ const addToCart = async (userId, productId) => {
   }
 };
 
-const clearCart=async(userId)=>{
+const clearCart = async (userId) => {
   try {
-    const cart =await Cart.deleteOne({userId})
-    return ({success:true,message: "Cart is cleared"})
+    const cart = await Cart.deleteOne({ userId });
+    return { success: true, message: "Cart is cleared" };
   } catch (error) {
-    return{success:false,message:"Error in clearing cart"}
+    return { success: false, message: "Error in clearing cart" };
   }
-}
+};
 
 const cartItems = async (userId) => {
   try {
@@ -374,7 +385,7 @@ const saveOrder = async ({
     });
     const orderData = await Order.create({
       customer: {
-        name: user.name,
+        firstName: user.firstName,
         email: user.email,
         phone: user.phone,
       },
@@ -504,5 +515,5 @@ module.exports = {
   getUserOrders,
   cancelOrder,
   returnOrder,
-  clearCart
+  clearCart,
 };
